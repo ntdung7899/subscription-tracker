@@ -41,11 +41,9 @@ export interface UpcomingPayment {
 // ==================== Recent Subscriptions ====================
 export interface RecentSubscription {
   id: string
-  appName: string
+  name: string
   category: string
-  billingCycle: string
-  price: number
-  currency: string
+  status: string
   createdAt: string
 }
 

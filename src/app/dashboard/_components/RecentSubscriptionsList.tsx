@@ -1,9 +1,12 @@
-import Link from 'next/link'
-import { ArrowRight, Calendar } from 'lucide-react'
-import { RecentSubscriptionsListProps } from '../_types'
-import { formatCurrency, formatRelativeTime } from '@/utils/formatters'
+import Link from "next/link";
+import { ArrowRight, Calendar } from "lucide-react";
+import { RecentSubscriptionsListProps } from "../_types";
+import { formatCurrency, formatRelativeTime } from "@/utils/formatters";
 
-export function RecentSubscriptionsList({ subscriptions, isLoading = false }: RecentSubscriptionsListProps) {
+export function RecentSubscriptionsList({
+  subscriptions,
+  isLoading = false,
+}: RecentSubscriptionsListProps) {
   if (isLoading) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
@@ -12,13 +15,16 @@ export function RecentSubscriptionsList({ subscriptions, isLoading = false }: Re
         </div>
         <div className="p-6 space-y-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-20 bg-gray-100 dark:bg-gray-900 rounded animate-pulse" />
+            <div
+              key={i}
+              className="h-20 bg-gray-100 dark:bg-gray-900 rounded animate-pulse"
+            />
           ))}
         </div>
       </div>
-    )
+    );
   }
-
+  console.log("subscriptions", subscriptions);
   if (!subscriptions || subscriptions.length === 0) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
@@ -31,7 +37,7 @@ export function RecentSubscriptionsList({ subscriptions, isLoading = false }: Re
           No subscriptions yet
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -54,29 +60,28 @@ export function RecentSubscriptionsList({ subscriptions, isLoading = false }: Re
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4 flex-1">
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg">
-                  {subscription.appName?.charAt(0) || '?'}
+                  {subscription.name?.charAt(0) || "?"}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                    {subscription.appName || 'Unknown'}
+                    {subscription.name || "Unknown"}
                   </h4>
                   <div className="flex items-center mt-1 space-x-3">
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {subscription.category || 'Uncategorized'}
+                      {subscription.category || "Uncategorized"}
                     </span>
-                    <span className="text-xs text-gray-400 dark:text-gray-500">•</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">
+                      •
+                    </span>
                     <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                      {subscription.billingCycle || 'monthly'}
+                      {subscription.status || "personal"}
                     </span>
                   </div>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                    {formatCurrency(subscription.price, subscription.currency)}
-                  </p>
-                  <div className="flex items-center mt-1 text-xs text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
                     <Calendar className="w-3 h-3 mr-1" />
                     {formatRelativeTime(subscription.createdAt)}
                   </div>
@@ -88,5 +93,5 @@ export function RecentSubscriptionsList({ subscriptions, isLoading = false }: Re
         ))}
       </div>
     </div>
-  )
+  );
 }
