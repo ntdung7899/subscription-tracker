@@ -1,1 +1,1 @@
-# subscription-tracker
+# subscription-tracker-frontend
