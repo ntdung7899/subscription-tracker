@@ -5,7 +5,7 @@ import { Member, FamilyGroup } from '../_types'
 interface FamilyGroupCardProps {
   group: FamilyGroup
   groupIndex: number
-  onUpdateGroup: (groupId: string, field: string, value: string) => void
+  onUpdateGroup: (groupId: string, field: keyof FamilyGroup, value: string) => void
   onRemoveGroup: (groupId: string) => void
   onAddMember: (groupId: string) => void
   onUpdateMember: (groupId: string, memberId: string, field: keyof Member, value: string | number) => void
@@ -46,6 +46,46 @@ export default function FamilyGroupCard({
           value={group.name}
           onChange={(e) => onUpdateGroup(group.id, 'name', e.target.value)}
           placeholder="Family A"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+        />
+      </div>
+
+      {/* Purchase Date & Expiration Date */}
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Ngày mua
+          </label>
+          <input
+            type="date"
+            value={group.purchaseDate}
+            onChange={(e) => onUpdateGroup(group.id, 'purchaseDate', e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Ngày hết hạn
+          </label>
+          <input
+            type="date"
+            value={group.expirationDate}
+            onChange={(e) => onUpdateGroup(group.id, 'expirationDate', e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+          />
+        </div>
+      </div>
+
+      {/* Notes */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Ghi chú
+        </label>
+        <textarea
+          value={group.notes}
+          onChange={(e) => onUpdateGroup(group.id, 'notes', e.target.value)}
+          placeholder="Thêm ghi chú về nhóm này..."
+          rows={2}
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
         />
       </div>

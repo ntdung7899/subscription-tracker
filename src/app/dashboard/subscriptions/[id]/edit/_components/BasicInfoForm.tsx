@@ -3,7 +3,7 @@ import { EditFormData } from '../_types'
 interface BasicInfoFormProps {
   formData: Pick<EditFormData, 'appName' | 'category' | 'price' | 'currency' | 'billingCycle' | 'notificationDays' | 'isShared'>
   errors: Record<string, string>
-  onInputChange: (field: string, value: string | boolean) => void
+  onInputChange: (field: keyof EditFormData, value: string | number | boolean) => void
 }
 
 const categories = [

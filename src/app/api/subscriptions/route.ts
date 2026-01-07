@@ -86,6 +86,13 @@ export async function POST(request: Request) {
           ? {
               create: familyGroups.map((group: any) => ({
                 name: group.groupName,
+                purchaseDate: group.purchaseDate
+                  ? new Date(group.purchaseDate)
+                  : null,
+                expirationDate: group.expirationDate
+                  ? new Date(group.expirationDate)
+                  : null,
+                notes: group.notes || null,
                 members: {
                   create: (group.members || []).map((member: any) => ({
                     name: member.name,

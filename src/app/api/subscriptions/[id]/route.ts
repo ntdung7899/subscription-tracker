@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
 
 // GET /api/subscriptions/[id] - Lấy chi tiết subscription
 export async function GET(
@@ -16,22 +16,22 @@ export async function GET(
           },
         },
       },
-    })
+    });
 
     if (!subscription) {
       return NextResponse.json(
-        { error: 'Subscription not found' },
+        { error: "Subscription not found" },
         { status: 404 }
-      )
+      );
     }
 
-    return NextResponse.json(subscription)
+    return NextResponse.json(subscription);
   } catch (error) {
-    console.error('Error fetching subscription:', error)
+    console.error("Error fetching subscription:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch subscription' },
+      { error: "Failed to fetch subscription" },
       { status: 500 }
-    )
+    );
   }
 }
 
@@ -41,12 +41,44 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const body = await request.json()
+    const body = await request.json();
+    // console.log('PUT /api/subscriptions/[id] - Received body:', JSON.stringify(body, null, 2))
+    // console.log('Subscription ID:', params.id)
 
     // First, delete all existing family groups and members
     await prisma.familyGroup.deleteMany({
       where: { subscriptionId: params.id },
-    })
+    });
+    // console.log('Deleted existing family groups')
+
+    // console.log('Deleted existing family groups')
+
+    // Filter out invalid family groups (only check for non-empty name)
+    const validFamilyGroups = body.familyGroups
+      ? body.familyGroups.filter((group: any) => {
+          const isValid = group.name && group.name.trim() !== "";
+
+          if (!isValid) {
+            // console.log('Invalid group filtered out:', {
+            //   name: group.name,
+            //   hasName: !!group.name,
+            //   nameNotEmpty: group.name ? group.name.trim() !== '' : false,
+            // });
+          }
+
+          return isValid;
+        })
+      : [];
+
+    // console.log(
+    //   "Total family groups received:",
+    //   body.familyGroups?.length || 0
+    // );
+    // console.log("Valid family groups count:", validFamilyGroups.length);
+    // console.log(
+    //   "Valid family groups:",
+    //   JSON.stringify(validFamilyGroups, null, 2)
+    // );
 
     // Then update subscription with new data
     const subscription = await prisma.subscription.update({
@@ -59,22 +91,32 @@ export async function PUT(
         billingCycle: body.billingCycle,
         notificationDays: parseInt(body.notificationDays),
         isShared: body.isShared,
-        familyGroups: body.familyGroups
-          ? {
-              create: body.familyGroups.map((group: any) => ({
-                name: group.name || group.groupName,
-                members: {
-                  create: (group.members || []).map((member: any) => ({
-                    name: member.name,
-                    email: member.email,
-                    amountPaid: parseInt(member.amountPaid) || 0,
-                    nextPaymentDate: new Date(member.nextPaymentDate).toISOString(),
-                    status: member.status || 'active',
-                  })),
-                },
-              })),
-            }
-          : undefined,
+        familyGroups:
+          validFamilyGroups.length > 0
+            ? {
+                create: validFamilyGroups.map((group: any) => ({
+                  name: group.name,
+                  purchaseDate: group.purchaseDate
+                    ? new Date(group.purchaseDate)
+                    : null,
+                  expirationDate: group.expirationDate
+                    ? new Date(group.expirationDate)
+                    : null,
+                  notes: group.notes || null,
+                  members: {
+                    create: (group.members || []).map((member: any) => ({
+                      name: member.name,
+                      email: member.email,
+                      amountPaid: parseInt(member.amountPaid) || 0,
+                      nextPaymentDate: new Date(
+                        member.nextPaymentDate
+                      ).toISOString(),
+                      status: member.status || "active",
+                    })),
+                  },
+                })),
+              }
+            : undefined,
       },
       include: {
         familyGroups: {
@@ -83,15 +125,23 @@ export async function PUT(
           },
         },
       },
-    })
+    });
 
-    return NextResponse.json(subscription)
+    // console.log("Subscription updated successfully:", subscription.id);
+    return NextResponse.json(subscription);
   } catch (error) {
-    console.error('Error updating subscription:', error)
+    console.error("Error updating subscription:", error);
+    console.error(
+      "Error details:",
+      error instanceof Error ? error.message : "Unknown error"
+    );
     return NextResponse.json(
-      { error: 'Failed to update subscription' },
+      {
+        error: "Failed to update subscription",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
-    )
+    );
   }
 }
 
@@ -103,14 +153,14 @@ export async function DELETE(
   try {
     await prisma.subscription.delete({
       where: { id: params.id },
-    })
+    });
 
-    return NextResponse.json({ message: 'Subscription deleted successfully' })
+    return NextResponse.json({ message: "Subscription deleted successfully" });
   } catch (error) {
-    console.error('Error deleting subscription:', error)
+    console.error("Error deleting subscription:", error);
     return NextResponse.json(
-      { error: 'Failed to delete subscription' },
+      { error: "Failed to delete subscription" },
       { status: 500 }
-    )
+    );
   }
 }

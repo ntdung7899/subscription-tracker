@@ -1,123 +1,154 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter, useParams } from 'next/navigation'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
-import Link from 'next/link'
-import { toast } from 'sonner'
-import { BasicInfoForm, FamilyGroupsSection } from './_components'
-import { Member, FamilyGroup, EditFormData } from './_types'
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { toast } from "sonner";
+import { BasicInfoForm, FamilyGroupsSection } from "./_components";
+import { Member, FamilyGroup, EditFormData } from "./_types";
 
 const categories = [
-  'Productivity',
-  'Development',
-  'Design',
-  'Entertainment',
-  'Cloud',
-  'Security',
-  'Other',
-]
+  "Productivity",
+  "Development",
+  "Design",
+  "Entertainment",
+  "Cloud",
+  "Security",
+  "Other",
+];
 
-const currencies = ['VND', 'USD', 'EUR', 'GBP', 'JPY']
+const currencies = ["VND", "USD", "EUR", "GBP", "JPY"];
 
 const billingCycles = [
-  { value: 'monthly', label: 'Monthly' },
-  { value: 'yearly', label: 'Yearly' },
-  { value: 'quarterly', label: 'Quarterly' },
-]
+  { value: "monthly", label: "Monthly" },
+  { value: "yearly", label: "Yearly" },
+  { value: "quarterly", label: "Quarterly" },
+];
 
 export default function EditSubscriptionPage() {
-  const router = useRouter()
-  const params = useParams()
-  const subscriptionId = params.id as string
+  const router = useRouter();
+  const params = useParams();
+  const subscriptionId = params.id as string;
 
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState<EditFormData>({
-    appName: '',
-    category: '',
-    price: '',
-    currency: 'VND',
-    billingCycle: 'monthly',
-    notificationDays: '3',
+    appName: "",
+    category: "",
+    price: "",
+    currency: "VND",
+    billingCycle: "monthly",
+    notificationDays: "3",
     isShared: false,
     familyGroups: [],
-  })
+  });
 
   useEffect(() => {
-    fetchSubscription()
-  }, [subscriptionId])
+    fetchSubscription();
+  }, [subscriptionId]);
 
   const fetchSubscription = async () => {
     try {
-      setIsLoading(true)
-      const response = await fetch(`/api/subscriptions/${subscriptionId}`)
-      
+      setIsLoading(true);
+      const response = await fetch(`/api/subscriptions/${subscriptionId}`);
+
       if (!response.ok) {
-        throw new Error('Failed to fetch subscription')
+        throw new Error("Failed to fetch subscription");
       }
 
-      const data = await response.json()
-      
+      const data = await response.json();
+      //   console.log('Fetched subscription data:', data);
+
+      // Transform familyGroups data from database format to form format
+      const transformedFamilyGroups = (data.familyGroups || []).map(
+        (group: any) => ({
+          id: group.id,
+          name: group.name || "",
+          purchaseDate: group.purchaseDate
+            ? new Date(group.purchaseDate).toISOString().split("T")[0]
+            : new Date().toISOString().split("T")[0],
+          expirationDate: group.expirationDate
+            ? new Date(group.expirationDate).toISOString().split("T")[0]
+            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split("T")[0],
+          notes: group.notes || "",
+          members: (group.members || []).map((member: any) => ({
+            id: member.id,
+            name: member.name || "",
+            email: member.email || "",
+            amountPaid: member.amountPaid || 0,
+            nextPaymentDate: member.nextPaymentDate
+              ? new Date(member.nextPaymentDate).toISOString().split("T")[0]
+              : new Date().toISOString().split("T")[0],
+            status: member.status || "active",
+          })),
+        })
+      );
+
+      //   console.log('Transformed family groups:', transformedFamilyGroups);
+
       setFormData({
-        appName: data.appName || '',
-        category: data.category || '',
-        price: data.price?.toString() || '',
-        currency: data.currency || 'VND',
-        billingCycle: data.billingCycle || 'monthly',
-        notificationDays: data.notificationDays?.toString() || '3',
-        familyGroups: data.familyGroups || [],
+        appName: data.appName || "",
+        category: data.category || "",
+        price: data.price?.toString() || "",
+        currency: data.currency || "VND",
+        billingCycle: data.billingCycle || "monthly",
+        notificationDays: data.notificationDays?.toString() || "3",
+        familyGroups: transformedFamilyGroups,
         isShared: data.isShared || false,
-      })
+      });
     } catch (error) {
-      console.error('Error fetching subscription:', error)
-      toast.error('Không thể tải thông tin subscription')
-      router.push('/dashboard/subscriptions')
+      console.error("Error fetching subscription:", error);
+      toast.error("Không thể tải thông tin subscription");
+      router.push("/dashboard/subscriptions");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
     if (!formData.appName.trim()) {
-      newErrors.appName = 'Tên ứng dụng là bắt buộc'
+      newErrors.appName = "Tên ứng dụng là bắt buộc";
     }
 
     if (!formData.category) {
-      newErrors.category = 'Danh mục là bắt buộc'
+      newErrors.category = "Danh mục là bắt buộc";
     }
 
     if (!formData.price || parseFloat(formData.price) <= 0) {
-      newErrors.price = 'Giá phải lớn hơn 0'
+      newErrors.price = "Giá phải lớn hơn 0";
     }
 
     if (!formData.billingCycle) {
-      newErrors.billingCycle = 'Chu kỳ thanh toán là bắt buộc'
+      newErrors.billingCycle = "Chu kỳ thanh toán là bắt buộc";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!validateForm()) {
-      toast.error('Vui lòng kiểm tra lại thông tin')
-      return
+      toast.error("Vui lòng kiểm tra lại thông tin");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
+      //   console.log('Submitting form data:', formData);
       const response = await fetch(`/api/subscriptions/${subscriptionId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           appName: formData.appName,
@@ -129,77 +160,98 @@ export default function EditSubscriptionPage() {
           isShared: formData.isShared,
           familyGroups: formData.familyGroups,
         }),
-      })
+      });
+      //   console.log("Response status:", response.status);
+      //   console.log("Response ok:", response.ok);
+
+      const responseData = await response.json();
+      //   console.log("Response data:", responseData);
 
       if (!response.ok) {
-        throw new Error('Failed to update subscription')
+        throw new Error(
+          responseData.details ||
+            responseData.error ||
+            "Failed to update subscription"
+        );
       }
 
-      toast.success('Cập nhật subscription thành công!')
-      router.push(`/dashboard/subscriptions/${subscriptionId}`)
+      toast.success("Cập nhật subscription thành công!");
+      router.push(`/dashboard/subscriptions/${subscriptionId}`);
     } catch (error) {
-      console.error('Error updating subscription:', error)
-      toast.error('Không thể cập nhật subscription')
+      console.error("Error updating subscription:", error);
+      toast.error("Không thể cập nhật subscription");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
-  const handleInputChange = (field: keyof EditFormData, value: string | number | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+  const handleInputChange = (
+    field: keyof EditFormData,
+    value: string | number | boolean
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const addFamilyGroup = () => {
     const newGroup: FamilyGroup = {
       id: `new-${Date.now()}`,
-      name: '',
+      name: "",
+      purchaseDate: new Date().toISOString().split("T")[0],
+      expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
+      notes: "",
       members: [],
-    }
+    };
     setFormData((prev) => ({
       ...prev,
       familyGroups: [...prev.familyGroups, newGroup],
-    }))
-  }
+    }));
+  };
 
   const removeFamilyGroup = (groupId: string) => {
     setFormData((prev) => ({
       ...prev,
       familyGroups: prev.familyGroups.filter((g) => g.id !== groupId),
-    }))
-  }
+    }));
+  };
 
-  const updateFamilyGroup = (groupId: string, field: keyof FamilyGroup, value: string) => {
+  const updateFamilyGroup = (
+    groupId: string,
+    field: keyof FamilyGroup,
+    value: string
+  ) => {
     setFormData((prev) => ({
       ...prev,
       familyGroups: prev.familyGroups.map((g) =>
         g.id === groupId ? { ...g, [field]: value } : g
       ),
-    }))
-  }
+    }));
+  };
 
   const addMember = (groupId: string) => {
     const newMember: Member = {
       id: `new-${Date.now()}`,
-      name: '',
-      email: '',
+      name: "",
+      email: "",
       amountPaid: 0,
-      nextPaymentDate: new Date().toISOString().split('T')[0],
-      status: 'active',
-    }
+      nextPaymentDate: new Date().toISOString().split("T")[0],
+      status: "active",
+    };
     setFormData((prev) => ({
       ...prev,
       familyGroups: prev.familyGroups.map((g) =>
         g.id === groupId ? { ...g, members: [...g.members, newMember] } : g
       ),
-    }))
-  }
+    }));
+  };
 
   const removeMember = (groupId: string, memberId: string) => {
     setFormData((prev) => ({
@@ -209,8 +261,8 @@ export default function EditSubscriptionPage() {
           ? { ...g, members: g.members.filter((m) => m.id !== memberId) }
           : g
       ),
-    }))
-  }
+    }));
+  };
 
   const updateMember = (
     groupId: string,
@@ -230,8 +282,8 @@ export default function EditSubscriptionPage() {
             }
           : g
       ),
-    }))
-  }
+    }));
+  };
 
   if (isLoading) {
     return (
@@ -241,7 +293,7 @@ export default function EditSubscriptionPage() {
           <p className="mt-4 text-gray-600 dark:text-gray-400">Đang tải...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -313,5 +365,5 @@ export default function EditSubscriptionPage() {
         </div>
       </form>
     </div>
-  )
+  );
 }

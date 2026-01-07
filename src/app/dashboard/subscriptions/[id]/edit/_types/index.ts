@@ -10,6 +10,9 @@ export interface Member {
 export interface FamilyGroup {
   id: string
   name: string
+  purchaseDate: string
+  expirationDate: string
+  notes: string
   members: Member[]
 }
 

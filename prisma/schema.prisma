@@ -79,6 +79,9 @@ model Subscription {
 model FamilyGroup {
   id             String       @id @default(cuid())
   name           String
+  purchaseDate   DateTime?
+  expirationDate DateTime?
+  notes          String?
   subscriptionId String
   subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   members        Member[]

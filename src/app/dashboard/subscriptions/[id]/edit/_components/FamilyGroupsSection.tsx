@@ -5,7 +5,7 @@ import { Member, FamilyGroup } from '../_types'
 interface FamilyGroupsSectionProps {
   familyGroups: FamilyGroup[]
   onAddGroup: () => void
-  onUpdateGroup: (groupId: string, field: string, value: string) => void
+  onUpdateGroup: (groupId: string, field: keyof FamilyGroup, value: string) => void
   onRemoveGroup: (groupId: string) => void
   onAddMember: (groupId: string) => void
   onUpdateMember: (groupId: string, memberId: string, field: keyof Member, value: string | number) => void
