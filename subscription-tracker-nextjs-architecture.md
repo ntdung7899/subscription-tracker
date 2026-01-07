@@ -697,29 +697,158 @@ export async function requireAuth() {
 
 ---
 
-## 🚀 Lộ trình migrate
+## 📊 Dashboard Implementation
 
-### Phase 1
-- Setup Next.js + App Router
-- Copy UI components
-- Mock data
+### Overview
+Production-ready dashboard with KPI cards, charts, tables, and recent activity lists.
 
-### Phase 2
-- Prisma + SQLite
-- CRUD API
+### Architecture
+```
+src/app/dashboard/
+├── _components/              # Dashboard-specific components
+│   ├── index.ts             # Barrel exports
+│   ├── StatsCard.tsx        # KPI metric card with icon
+│   ├── MonthlySpendingChart.tsx    # Line chart (Recharts)
+│   ├── CategoryBreakdownChart.tsx  # Pie chart (Recharts)
+│   ├── UpcomingPaymentsTable.tsx   # Responsive table
+│   └── RecentSubscriptionsList.tsx # Activity list
+├── _types/
+│   └── index.ts             # Dashboard type definitions
+└── page.tsx                 # Main dashboard page (~100 lines)
+```
 
-### Phase 3
-- Email backend
-- Cron notify
+### Type Definitions
+```typescript
+// Dashboard Statistics
+interface DashboardStats {
+  totalSubscriptions: number
+  monthlyCost: number
+  expiringSoon: number
+  totalMembers: number
+}
 
-### Phase 4
-- Deploy (Vercel / VPS)
-- Multi-user
+// Chart Data
+interface MonthlySpending {
+  month: string
+  amount: number
+}
+
+interface CategoryBreakdown {
+  category: string
+  amount: number
+}
+
+// Upcoming Payment
+interface UpcomingPayment {
+  id: string
+  name: string
+  amount: number
+  dueDate: string
+  category: string
+}
+
+// Recent Subscription
+interface RecentSubscription {
+  id: string
+  name: string
+  category: string
+  status: string
+  createdAt: string
+}
+```
+
+### Components
+
+#### StatsCard
+- **Purpose**: Display KPI metrics with icons
+- **Props**: title, value, icon (Lucide), isLoading
+- **Features**: Skeleton loading state, icon background colors
+- **Size**: ~40 lines
+
+#### MonthlySpendingChart
+- **Purpose**: Visualize spending trends over 6 months
+- **Library**: Recharts (LineChart)
+- **Features**: Responsive, dark mode support, formatted currency tooltips
+- **Size**: ~65 lines
+
+#### CategoryBreakdownChart
+- **Purpose**: Show spending distribution by category
+- **Library**: Recharts (PieChart)
+- **Features**: Color-coded segments, percentage labels, responsive legend
+- **Size**: ~95 lines
+
+#### UpcomingPaymentsTable
+- **Purpose**: List next 5 upcoming payments
+- **Features**: Responsive table, date formatting, category badges, empty state
+- **Size**: ~80 lines
+
+#### RecentSubscriptionsList
+- **Purpose**: Show last 5 subscriptions added
+- **Features**: Status badges, relative time, empty state
+- **Size**: ~70 lines
+
+### Custom Hook
+```typescript
+// src/hooks/useDashboard.ts
+export function useDashboard() {
+  const [summary, setSummary] = useState<DashboardSummary | null>(null)
+  const [charts, setCharts] = useState<ChartData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Parallel fetch: /api/dashboard/summary & /api/dashboard/charts
+    // Error handling & loading states
+  }, [])
+
+  return { summary, charts, isLoading, error }
+}
+```
+
+### API Endpoints
+
+#### GET /api/dashboard/summary
+- **Returns**: DashboardSummary (stats, upcomingPayments, recentSubscriptions)
+- **Logic**:
+  - Count total subscriptions
+  - Calculate monthly cost (split among members if shared)
+  - Find payments expiring in next 7 days
+  - Count total members across all groups
+  - Get next 5 upcoming payments (30 days)
+  - Get last 5 created subscriptions
+
+#### GET /api/dashboard/charts
+- **Returns**: ChartData (monthlySpending, categoryBreakdown)
+- **Logic**:
+  - Generate last 6 months spending trend
+  - Aggregate spending by category
+  - Sort categories by amount
+
+### Data Flow
+1. Dashboard page mounts → useDashboard hook fetches data
+2. Parallel API calls to /summary and /charts
+3. Loading skeletons shown during fetch
+4. Data updates trigger component re-renders
+5. Error states handled gracefully
+
+### Best Practices Applied
+✅ Component size < 100 lines (except CategoryBreakdownChart at 95)
+✅ Type-safe with TypeScript interfaces
+✅ Custom hooks for data fetching
+✅ Parallel API requests for performance
+✅ Loading & error states on all components
+✅ Responsive design (mobile/tablet/desktop)
+✅ Dark mode support
+✅ Empty states for no data
+✅ Formatters for currency and dates
+✅ Barrel exports for clean imports
+
+### Performance Optimizations
+- Parallel API fetching (Promise.all)
+- Memoized calculations in APIs
+- Responsive charts (ResponsiveContainer)
+- Skeleton loading for perceived performance
+- Limited data sets (top 5 items)
 
 ---
 
-## ✅ Kết luận
-Next.js FE + BE giúp project:
-- Gọn
-- Dễ scale
-- Chuẩn SaaS / Web App
