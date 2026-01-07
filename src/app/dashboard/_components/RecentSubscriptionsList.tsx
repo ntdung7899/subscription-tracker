@@ -24,7 +24,6 @@ export function RecentSubscriptionsList({
       </div>
     );
   }
-  console.log("subscriptions", subscriptions);
   if (!subscriptions || subscriptions.length === 0) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">

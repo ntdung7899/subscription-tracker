@@ -43,6 +43,12 @@ export async function PUT(
   try {
     const body = await request.json()
 
+    // First, delete all existing family groups and members
+    await prisma.familyGroup.deleteMany({
+      where: { subscriptionId: params.id },
+    })
+
+    // Then update subscription with new data
     const subscription = await prisma.subscription.update({
       where: { id: params.id },
       data: {
@@ -53,6 +59,22 @@ export async function PUT(
         billingCycle: body.billingCycle,
         notificationDays: parseInt(body.notificationDays),
         isShared: body.isShared,
+        familyGroups: body.familyGroups
+          ? {
+              create: body.familyGroups.map((group: any) => ({
+                name: group.name || group.groupName,
+                members: {
+                  create: (group.members || []).map((member: any) => ({
+                    name: member.name,
+                    email: member.email,
+                    amountPaid: parseInt(member.amountPaid) || 0,
+                    nextPaymentDate: new Date(member.nextPaymentDate).toISOString(),
+                    status: member.status || 'active',
+                  })),
+                },
+              })),
+            }
+          : undefined,
       },
       include: {
         familyGroups: {

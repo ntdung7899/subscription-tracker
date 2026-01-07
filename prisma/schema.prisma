@@ -20,6 +20,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   subscriptions Subscription[]
+  categories    Category[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }
@@ -106,4 +107,18 @@ model EmailLog {
   status    String   // "sent", "failed"
   error     String?
   sentAt    DateTime @default(now())
+}
+
+model Category {
+  id           String   @id @default(cuid())
+  categoryName String
+  description  String?
+  color        String   @default("#3B82F6") // Hex color code
+  status       String   @default("active") // "active", "inactive"
+  createdBy    String?
+  creator      User?    @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([categoryName, createdBy])
 }
