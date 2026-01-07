@@ -35,8 +35,8 @@ export default function PricingPage() {
   }, [])
 
   const handleSelectPlan = (planId: string) => {
-    // Redirect to signup page with selected plan
-    router.push(`/signup?plan=${planId}&billing=${billingPeriod}`)
+    // Redirect to checkout page with selected plan
+    router.push(`/dashboard/checkout?plan=${planId}&billing=${billingPeriod}`)
   }
 
   return (

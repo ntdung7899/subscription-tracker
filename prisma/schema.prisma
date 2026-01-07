@@ -163,3 +163,37 @@ model FAQ {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+model CheckoutSession {
+  id            String   @id @default(cuid())
+  userId        String?
+  planId        String
+  billingCycle  String // "monthly" or "yearly"
+  amount        Int // in cents
+  currency      String   @default("USD")
+  status        String   @default("pending") // "pending", "paid", "failed", "canceled"
+  customerEmail String?
+  customerName  String?
+  country       String?
+  taxAmount     Int      @default(0)
+  discountAmount Int     @default(0)
+  couponCode    String?
+  paymentMethod String? // "card", "bank_transfer", "wallet"
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  expiresAt     DateTime
+}
+
+model UserSubscription {
+  id              String   @id @default(cuid())
+  userId          String
+  planId          String
+  status          String   @default("active") // "active", "canceled", "expired", "trial"
+  billingCycle    String // "monthly" or "yearly"
+  startDate       DateTime @default(now())
+  nextBillingDate DateTime
+  canceledAt      DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

@@ -18,12 +18,14 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  DollarSign,
 } from 'lucide-react'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Subscriptions', href: '/dashboard/subscriptions', icon: CreditCard },
   { name: 'Statistics', href: '/dashboard/statistics', icon: BarChart3 },
+  { name: 'Pricing', href: '/pricing', icon: DollarSign },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ]
 

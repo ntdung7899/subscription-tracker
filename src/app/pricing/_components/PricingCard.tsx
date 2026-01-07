@@ -18,6 +18,14 @@ export default function PricingCard({
       ? Math.round(((plan.monthlyPrice * 12 - plan.yearlyPrice) / (plan.monthlyPrice * 12)) * 100)
       : 0
 
+  const handleClick = () => {
+    if (plan.id === 'free') {
+      onSelectPlan(plan.id)
+    } else {
+      window.location.href = `/dashboard/checkout?plan=${plan.id}&billing=${billingPeriod}`
+    }
+  }
+
   return (
     <div
       className={`relative bg-white dark:bg-gray-800 rounded-lg border-2 p-8 shadow-sm hover:shadow-lg transition-all ${
@@ -69,7 +77,7 @@ export default function PricingCard({
       </ul>
 
       <button
-        onClick={() => onSelectPlan(plan.id)}
+        onClick={handleClick}
         className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
           plan.highlighted
             ? 'bg-blue-600 hover:bg-blue-700 text-white'
