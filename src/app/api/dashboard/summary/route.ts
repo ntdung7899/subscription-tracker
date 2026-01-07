@@ -7,12 +7,15 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session?.user?.email) {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Get all subscriptions with family groups and members
+    // Get all subscriptions with family groups and members for this user
     const subscriptions = await prisma.subscription.findMany({
+      where: {
+        createdBy: session.user.id,
+      },
       include: {
         familyGroups: {
           include: {

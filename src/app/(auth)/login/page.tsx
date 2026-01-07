@@ -1,104 +1,118 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { Eye, EyeOff, Loader2, Mail, Lock, CheckCircle2, XCircle } from 'lucide-react'
-import { signIn } from 'next-auth/react'
+import { useState } from "react";
+import Link from "next/link";
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  Mail,
+  Lock,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
+import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     rememberMe: false,
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [isLoading, setIsLoading] = useState(false)
-  const [submitError, setSubmitError] = useState('')
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
     if (!formData.email) {
-      newErrors.email = 'Email is required'
+      newErrors.email = "Email is required";
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
+      newErrors.email = "Please enter a valid email address";
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required'
+      newErrors.password = "Password is required";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSubmitError('')
-    setSubmitSuccess(false)
+    e.preventDefault();
+    setSubmitError("");
+    setSubmitSuccess(false);
 
-    if (!validateForm()) return
+    if (!validateForm()) {
+      toast.error("Vui lòng điền đầy đủ thông tin hợp lệ");
+      return;
+    }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          rememberMe: formData.rememberMe,
-        }),
-      })
+      const result = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Invalid credentials')
+      if (result?.error) {
+        toast.error("Email hoặc mật khẩu không đúng");
+        // throw new Error(result.error);
       }
 
-      setSubmitSuccess(true)
-      setTimeout(() => {
-        window.location.href = '/dashboard'
-      }, 1000)
+      if (result?.ok) {
+        setSubmitSuccess(true);
+        toast.success("Đăng nhập thành công!");
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 1000);
+      }
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : 'Something went wrong')
+      const errorMessage =
+        error instanceof Error ? error.message : "Something went wrong";
+      setSubmitError(errorMessage);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }))
+      [name]: type === "checkbox" ? checked : value,
+    }));
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }))
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
-  }
+  };
 
   const handleOAuthSignIn = (provider: string) => {
-    signIn(provider, { callbackUrl: '/dashboard' })
-  }
+    toast.loading("Đang chuyển hướng...");
+    signIn(provider, { callbackUrl: "/dashboard" });
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-950 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
-          <Link href="/" className="inline-flex items-center justify-center space-x-2">
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center space-x-2"
+          >
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-purple-600">
               <span className="text-lg font-bold text-white">ST</span>
             </div>
@@ -136,7 +150,10 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Email address <span className="text-red-500">*</span>
               </label>
               <div className="relative mt-1">
@@ -151,8 +168,8 @@ export default function LoginPage() {
                   onChange={handleChange}
                   className={`block w-full rounded-lg border ${
                     errors.email
-                      ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700'
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700"
                   } bg-white py-2.5 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500`}
                   placeholder="john@example.com"
                 />
@@ -164,7 +181,10 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Password <span className="text-red-500">*</span>
               </label>
               <div className="relative mt-1">
@@ -172,15 +192,15 @@ export default function LoginPage() {
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   className={`block w-full rounded-lg border ${
                     errors.password
-                      ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700'
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700"
                   } bg-white py-2.5 pl-10 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500`}
                   placeholder="••••••••"
                 />
@@ -235,7 +255,7 @@ export default function LoginPage() {
                   Signing in...
                 </>
               ) : (
-                'Sign in'
+                "Sign in"
               )}
             </button>
           </form>
@@ -256,7 +276,7 @@ export default function LoginPage() {
           <div className="space-y-3">
             <button
               type="button"
-              onClick={() => handleOAuthSignIn('google')}
+              onClick={() => handleOAuthSignIn("google")}
               className="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:ring-offset-gray-900"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -281,7 +301,7 @@ export default function LoginPage() {
             </button>
             <button
               type="button"
-              onClick={() => handleOAuthSignIn('github')}
+              onClick={() => handleOAuthSignIn("github")}
               className="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:ring-offset-gray-900"
             >
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -298,7 +318,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link
             href="/signup"
             className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400"
@@ -308,5 +328,5 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
-  )
+  );
 }

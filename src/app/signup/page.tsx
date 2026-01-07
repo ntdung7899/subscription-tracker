@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff, Loader2, Mail, Lock, User, CheckCircle2, XCircle } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -69,7 +70,10 @@ export default function SignUpPage() {
     setSubmitError('')
     setSubmitSuccess(false)
 
-    if (!validateForm()) return
+    if (!validateForm()) {
+      toast.error('Vui lòng điền đầy đủ thông tin hợp lệ')
+      return
+    }
 
     setIsLoading(true)
 
@@ -89,16 +93,19 @@ export default function SignUpPage() {
       const data = await response.json()
 
       if (!response.ok) {
+        toast.error(data.message || 'Tạo tài khoản thất bại')
         throw new Error(data.message || 'Failed to create account')
       }
 
       setSubmitSuccess(true)
+      toast.success('Tạo tài khoản thành công! Đang chuyển đến trang đăng nhập...')
       // Redirect to login or dashboard after success
       setTimeout(() => {
         window.location.href = '/login'
       }, 2000)
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : 'Something went wrong')
+      const errorMessage = error instanceof Error ? error.message : 'Something went wrong'
+      setSubmitError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -117,6 +124,7 @@ export default function SignUpPage() {
   }
 
   const handleOAuthSignUp = (provider: string) => {
+    toast.loading('Đang chuyển hướng...')
     window.location.href = `/api/auth/signin?provider=${provider}`
   }
 

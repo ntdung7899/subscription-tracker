@@ -1,10 +1,11 @@
 /**
  * Format currency amount based on currency code
  */
-export function formatCurrency(amount: number, currency: string): string {
+export function formatCurrency(amount: number, currency: string = 'VND'): string {
+  const currencyCode = currency || 'VND'
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
-    currency: currency === 'VND' ? 'VND' : currency,
+    currency: currencyCode,
   }).format(amount)
 }
 

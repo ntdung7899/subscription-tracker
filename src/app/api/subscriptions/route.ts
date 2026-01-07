@@ -1,11 +1,32 @@
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { prisma } from '@/lib/db'
 
 // GET /api/subscriptions - Lấy danh sách subscriptions
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions)
+    
+    if (!session || !session.user?.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
     const subscriptions = await prisma.subscription.findMany({
+      where: {
+        createdBy: session.user.id,
+      },
       include: {
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
         familyGroups: {
           include: {
             members: true,
@@ -30,6 +51,15 @@ export async function GET() {
 // POST /api/subscriptions - Tạo subscription mới
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession(authOptions)
+    
+    if (!session || !session.user?.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
     const body = await request.json()
     const {
       appName,
@@ -51,6 +81,7 @@ export async function POST(request: Request) {
         billingCycle,
         notificationDays: parseInt(notificationDays) || 3,
         isShared: isShared || false,
+        createdBy: session.user.id,
         familyGroups: familyGroups
           ? {
               create: familyGroups.map((group: any) => ({

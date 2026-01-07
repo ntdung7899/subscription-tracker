@@ -54,19 +54,19 @@ export function RecentSubscriptionsList({ subscriptions, isLoading = false }: Re
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4 flex-1">
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg">
-                  {subscription.appName.charAt(0)}
+                  {subscription.appName?.charAt(0) || '?'}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                    {subscription.appName}
+                    {subscription.appName || 'Unknown'}
                   </h4>
                   <div className="flex items-center mt-1 space-x-3">
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {subscription.category}
+                      {subscription.category || 'Uncategorized'}
                     </span>
                     <span className="text-xs text-gray-400 dark:text-gray-500">•</span>
                     <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                      {subscription.billingCycle}
+                      {subscription.billingCycle || 'monthly'}
                     </span>
                   </div>
                 </div>

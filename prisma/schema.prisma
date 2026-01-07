@@ -11,15 +11,17 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
+  password      String?
   accounts      Account[]
   sessions      Session[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  subscriptions Subscription[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model Account {
@@ -66,6 +68,8 @@ model Subscription {
   billingCycle     String        // "monthly", "yearly", "quarterly"
   notificationDays Int           @default(3)
   isShared         Boolean       @default(false)
+  createdBy        String?
+  creator          User?         @relation(fields: [createdBy], references: [id], onDelete: Cascade)
   familyGroups     FamilyGroup[]
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
