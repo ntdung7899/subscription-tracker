@@ -14,42 +14,19 @@ import {
   Loader2,
   Filter,
 } from 'lucide-react'
-
-interface Subscription {
-  id: string
-  appName: string
-  category: string
-  price: number
-  currency: string
-  billingCycle: string
-  notificationDays: number
-  isShared: boolean
-  createdAt: string
-  updatedAt: string
-  familyGroups: {
-    id: string
-    name: string
-    members: any[]
-  }[]
-}
+import {
+  SubscriptionWithRelations,
+  SubscriptionCategory,
+  SUBSCRIPTION_CATEGORIES,
+  CATEGORY_COLORS,
+} from './_types'
 
 export default function SubscriptionsPage() {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
+  const [subscriptions, setSubscriptions] = useState<SubscriptionWithRelations[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<string>('All')
-
-  const categories = [
-    'All',
-    'Productivity',
-    'Development',
-    'Design',
-    'Entertainment',
-    'Cloud',
-    'Security',
-    'Other',
-  ]
+  const [selectedCategory, setSelectedCategory] = useState<SubscriptionCategory>('All')
 
   const filteredSubscriptions = selectedCategory === 'All'
     ? subscriptions
@@ -106,16 +83,7 @@ export default function SubscriptionsPage() {
   }
 
   const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      Productivity: 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
-      Development: 'bg-purple-100 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400',
-      Design: 'bg-pink-100 text-pink-700 dark:bg-pink-900/20 dark:text-pink-400',
-      Entertainment: 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400',
-      Cloud: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/20 dark:text-cyan-400',
-      Security: 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400',
-      Other: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-400',
-    }
-    return colors[category] || colors.Other
+    return CATEGORY_COLORS[category] || CATEGORY_COLORS.Other
   }
 
   if (isLoading) {
@@ -177,7 +145,7 @@ export default function SubscriptionsPage() {
             </span>
           </div>
           <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
+            {SUBSCRIPTION_CATEGORIES.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
