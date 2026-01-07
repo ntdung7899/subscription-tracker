@@ -125,3 +125,41 @@ model Category {
 
   @@unique([categoryName, createdBy])
 }
+
+model PricingPlan {
+  id            String           @id @default(cuid())
+  name          String           @unique // "Free", "Pro", "Team"
+  description   String
+  monthlyPrice  Int              @default(0) // in cents (e.g., 999 = $9.99)
+  yearlyPrice   Int              @default(0) // in cents
+  currency      String           @default("USD")
+  badge         String? // "Most popular", "Best value", etc.
+  cta           String           @default("Get started")
+  isHighlighted Boolean          @default(false)
+  isActive      Boolean          @default(true)
+  features      PricingFeature[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model PricingFeature {
+  id            String      @id @default(cuid())
+  name          String // "Unlimited subscriptions", "Email reminders", etc.
+  description   String? // Optional detailed description
+  isIncluded    Boolean     @default(true)
+  displayOrder  Int         @default(0) // For ordering features in UI
+  pricingPlanId String
+  pricingPlan   PricingPlan @relation(fields: [pricingPlanId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model FAQ {
+  id           String   @id @default(cuid())
+  question     String
+  answer       String
+  displayOrder Int      @default(0) // For ordering FAQs in UI
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

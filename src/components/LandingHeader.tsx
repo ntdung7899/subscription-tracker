@@ -28,7 +28,7 @@ export default function LandingHeader() {
   const navItems = [
     { label: "Product", href: "#features" },
     { label: "How it works", href: "#how-it-works" },
-    { label: "Pricing", href: "#pricing" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Docs", href: "/docs" },
   ];
 
