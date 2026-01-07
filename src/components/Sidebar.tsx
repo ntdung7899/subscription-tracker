@@ -19,6 +19,7 @@ import {
   ChevronLeft,
   ChevronRight,
   DollarSign,
+  Receipt,
 } from 'lucide-react'
 
 const navigation = [
@@ -26,6 +27,7 @@ const navigation = [
   { name: 'Subscriptions', href: '/dashboard/subscriptions', icon: CreditCard },
   { name: 'Statistics', href: '/dashboard/statistics', icon: BarChart3 },
   { name: 'Pricing', href: '/pricing', icon: DollarSign },
+  { name: 'Billing', href: '/dashboard/billing', icon: Receipt },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ]
 
