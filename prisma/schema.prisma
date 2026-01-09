@@ -63,6 +63,7 @@ model VerificationToken {
 model Subscription {
   id               String        @id @default(cuid())
   appName          String
+  serviceKey       String?       // Key from ServiceIcons (netflix, spotify, etc.)
   category         String
   price            Int
   currency         String        @default("VND")

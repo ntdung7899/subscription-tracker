@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Plus,
   Trash2,
@@ -11,108 +11,175 @@ import {
   Save,
   X,
   AlertCircle,
-} from 'lucide-react'
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import { ServiceIcons, PopularServices } from "@/assets/serviceIcons";
 
 interface Member {
-  id: string
-  name: string
-  email: string
-  amountPaid: number
-  nextPaymentDate: string
-  status: 'active' | 'pending' | 'overdue'
+  id: string;
+  name: string;
+  email: string;
+  amountPaid: number;
+  nextPaymentDate: string;
+  status: "active" | "pending" | "overdue";
 }
 
 interface FamilyGroup {
-  id: string
-  groupName: string
-  purchaseDate: string
-  expirationDate: string
-  notes: string
-  members: Member[]
+  id: string;
+  groupName: string;
+  purchaseDate: string;
+  expirationDate: string;
+  notes: string;
+  members: Member[];
 }
 
 interface FormData {
-  appName: string
-  category: string
-  price: number
-  currency: string
-  billingCycle: 'monthly' | 'yearly'
-  startDate: string
-  expirationDate: string
-  autoRenew: boolean
-  isShared: boolean
-  maxMembers: number
-  notificationDays: number
-  familyGroups: FamilyGroup[]
+  appName: string;
+  serviceKey?: string;
+  category: string;
+  price: number;
+  currency: string;
+  billingCycle: "monthly" | "yearly";
+  startDate: string;
+  expirationDate: string;
+  autoRenew: boolean;
+  isShared: boolean;
+  maxMembers: number;
+  notificationDays: number;
+  familyGroups: FamilyGroup[];
 }
 
 export default function NewSubscriptionPage() {
-  const router = useRouter()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showAllServices, setShowAllServices] = useState(false);
+  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   const [formData, setFormData] = useState<FormData>({
-    appName: '',
-    category: '',
+    appName: "",
+    serviceKey: undefined,
+    category: "",
     price: 0,
-    currency: 'VND',
-    billingCycle: 'monthly',
-    startDate: new Date().toISOString().split('T')[0],
-    expirationDate: '',
+    currency: "VND",
+    billingCycle: "monthly",
+    startDate: new Date().toISOString().split("T")[0],
+    expirationDate: "",
     autoRenew: true,
     isShared: false,
     maxMembers: 5,
     notificationDays: 7,
     familyGroups: [],
-  })
+  });
 
-  const categories = [
-    'Productivity',
-    'Development',
-    'Design',
-    'Entertainment',
-    'Cloud',
-    'Security',
-    'Other',
-  ]
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setIsLoadingCategories(true);
+        const response = await fetch('/api/categories');
+        if (response.ok) {
+          const data = await response.json();
+          // Extract unique category names from the response
+          const categoryNames = data.map((cat: any) => cat.categoryName);
+          setCategories(categoryNames);
+        } else {
+          // Fallback to default categories if API fails
+          setCategories([
+            "Productivity",
+            "Development",
+            "Design",
+            "Entertainment",
+            "Cloud",
+            "Security",
+            "Other",
+          ]);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Fallback to default categories
+        setCategories([
+          "Productivity",
+          "Development",
+          "Design",
+          "Entertainment",
+          "Cloud",
+          "Security",
+          "Other",
+        ]);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
 
-  const currencies = ['VND', 'USD', 'EUR', 'GBP', 'JPY']
+    fetchCategories();
+  }, []);
+
+  const currencies = ["VND", "USD", "EUR", "GBP", "JPY"];
+
+  const handleQuickSelect = (serviceName: string, serviceKey: string, price: number) => {
+    setSelectedService(serviceKey);
+    setFormData((prev) => ({
+      ...prev,
+      appName: serviceName,
+      serviceKey: serviceKey,
+      price: price,
+    }));
+    // Clear errors if any
+    if (errors.appName) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.appName;
+        return newErrors;
+      });
+    }
+  };
+
+  const allServices = Object.entries(ServiceIcons).filter(
+    ([key]) => key !== "other"
+  );
+  const displayedServices = showAllServices 
+    ? allServices 
+    : allServices.slice(0, 7);
 
   const handleInputChange = (
     field: keyof FormData,
     value: string | number | boolean
   ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const addFamilyGroup = () => {
     const newGroup: FamilyGroup = {
       id: Date.now().toString(),
-      groupName: '',
-      purchaseDate: new Date().toISOString().split('T')[0],
-      expirationDate: '',
-      notes: '',
+      groupName: "",
+      purchaseDate: new Date().toISOString().split("T")[0],
+      expirationDate: "",
+      notes: "",
       members: [],
-    }
+    };
     setFormData((prev) => ({
       ...prev,
       familyGroups: [...prev.familyGroups, newGroup],
-    }))
-  }
+    }));
+  };
 
   const removeFamilyGroup = (groupId: string) => {
     setFormData((prev) => ({
       ...prev,
       familyGroups: prev.familyGroups.filter((g) => g.id !== groupId),
-    }))
-  }
+    }));
+  };
 
   const updateFamilyGroup = (
     groupId: string,
@@ -124,25 +191,25 @@ export default function NewSubscriptionPage() {
       familyGroups: prev.familyGroups.map((g) =>
         g.id === groupId ? { ...g, [field]: value } : g
       ),
-    }))
-  }
+    }));
+  };
 
   const addMember = (groupId: string) => {
     const newMember: Member = {
       id: Date.now().toString(),
-      name: '',
-      email: '',
+      name: "",
+      email: "",
       amountPaid: 0,
-      nextPaymentDate: new Date().toISOString().split('T')[0],
-      status: 'active',
-    }
+      nextPaymentDate: new Date().toISOString().split("T")[0],
+      status: "active",
+    };
     setFormData((prev) => ({
       ...prev,
       familyGroups: prev.familyGroups.map((g) =>
         g.id === groupId ? { ...g, members: [...g.members, newMember] } : g
       ),
-    }))
-  }
+    }));
+  };
 
   const removeMember = (groupId: string, memberId: string) => {
     setFormData((prev) => ({
@@ -152,8 +219,8 @@ export default function NewSubscriptionPage() {
           ? { ...g, members: g.members.filter((m) => m.id !== memberId) }
           : g
       ),
-    }))
-  }
+    }));
+  };
 
   const updateMember = (
     groupId: string,
@@ -173,62 +240,63 @@ export default function NewSubscriptionPage() {
             }
           : g
       ),
-    }))
-  }
+    }));
+  };
 
   const validate = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
     if (!formData.appName.trim()) {
-      newErrors.appName = 'App name is required'
+      newErrors.appName = "App name is required";
     }
 
     if (!formData.category) {
-      newErrors.category = 'Category is required'
+      newErrors.category = "Category is required";
     }
 
     if (!formData.price || formData.price <= 0) {
-      newErrors.price = 'Price must be greater than 0'
+      newErrors.price = "Price must be greater than 0";
     }
 
     if (!formData.expirationDate) {
-      newErrors.expirationDate = 'Expiration date is required'
+      newErrors.expirationDate = "Expiration date is required";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!validate()) {
-      return
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/subscriptions', {
-        method: 'POST',
+      const response = await fetch("/api/subscriptions", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
+      });
 
       if (response.ok) {
-        router.push('/dashboard/subscriptions')
+        router.push("/dashboard/subscriptions");
       } else {
-        const error = await response.json()
-        setErrors({ submit: error.message || 'Failed to create subscription' })
+        const error = await response.json();
+        setErrors({ submit: error.message || "Failed to create subscription" });
       }
     } catch (error) {
-      setErrors({ submit: 'Network error. Please try again.' })
+      setErrors({ submit: "Network error. Please try again." });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
+  // Filter services based on search
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 py-8">
@@ -244,6 +312,84 @@ export default function NewSubscriptionPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Quick Select Popular Services */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              🚀 Chọn nhanh dịch vụ phổ biến
+            </h2>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              {displayedServices.map(([key, service]) => {
+                const isSelected = selectedService === key;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => {
+                      const popularService = PopularServices.find(s => s.key === key);
+                      handleQuickSelect(
+                        popularService?.name || key.charAt(0).toUpperCase() + key.slice(1),
+                        key,
+                        popularService?.price || 0
+                      );
+                    }}
+                    className={`relative flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all group ${
+                      isSelected
+                        ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-500 dark:ring-blue-400 ring-offset-2 dark:ring-offset-gray-800'
+                        : 'border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                    }`}
+                    style={{
+                      background: isSelected ? `${service.gradient}25` : `${service.gradient}15`,
+                    }}
+                  >
+                    <div
+                      className={`text-3xl mb-2 transition-transform ${
+                        isSelected ? 'scale-110' : 'group-hover:scale-110'
+                      }`}
+                    >
+                      {service.icon}
+                    </div>
+                    <span className={`text-xs font-medium text-center capitalize ${
+                      isSelected
+                        ? 'text-blue-700 dark:text-blue-300 font-semibold'
+                        : 'text-gray-700 dark:text-gray-300'
+                    }`}>
+                      {key.replace(/([A-Z])/g, ' $1').trim()}
+                    </span>
+                    {isSelected && (
+                      <div className="absolute top-1 right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Show More/Less Button */}
+            <div className="mt-4 text-center">
+              <button
+                type="button"
+                onClick={() => setShowAllServices(!showAllServices)}
+                className="inline-flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              >
+                {showAllServices ? (
+                  <>
+                    <ChevronUp className="w-4 h-4 mr-2" />
+                    Ẩn bớt
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-4 h-4 mr-2" />
+                    Xem thêm ({allServices.length - 7} dịch vụ)
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
           {/* Basic Information */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -260,12 +406,12 @@ export default function NewSubscriptionPage() {
                 <input
                   type="text"
                   value={formData.appName}
-                  onChange={(e) => handleInputChange('appName', e.target.value)}
+                  onChange={(e) => handleInputChange("appName", e.target.value)}
                   placeholder="Netflix, Spotify..."
                   className={`w-full px-4 py-2 rounded-lg border ${
                     errors.appName
-                      ? 'border-red-500 dark:border-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                      ? "border-red-500 dark:border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
                   } bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                 />
                 {errors.appName && (
@@ -283,11 +429,13 @@ export default function NewSubscriptionPage() {
                 </label>
                 <select
                   value={formData.category}
-                  onChange={(e) => handleInputChange('category', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("category", e.target.value)
+                  }
                   className={`w-full px-4 py-2 rounded-lg border ${
                     errors.category
-                      ? 'border-red-500 dark:border-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                      ? "border-red-500 dark:border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
                   } bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                 >
                   <option value="">Select category</option>
@@ -315,19 +463,24 @@ export default function NewSubscriptionPage() {
                     type="number"
                     value={formData.price}
                     onChange={(e) =>
-                      handleInputChange('price', parseFloat(e.target.value) || 0)
+                      handleInputChange(
+                        "price",
+                        parseFloat(e.target.value) || 0
+                      )
                     }
                     placeholder="0"
                     step="0.01"
                     className={`flex-1 px-4 py-2 rounded-lg border ${
                       errors.price
-                        ? 'border-red-500 dark:border-red-500'
-                        : 'border-gray-300 dark:border-gray-600'
+                        ? "border-red-500 dark:border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
                     } bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                   />
                   <select
                     value={formData.currency}
-                    onChange={(e) => handleInputChange('currency', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("currency", e.target.value)
+                    }
                     className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   >
                     {currencies.map((curr) => (
@@ -355,9 +508,9 @@ export default function NewSubscriptionPage() {
                     <input
                       type="radio"
                       value="monthly"
-                      checked={formData.billingCycle === 'monthly'}
+                      checked={formData.billingCycle === "monthly"}
                       onChange={(e) =>
-                        handleInputChange('billingCycle', e.target.value)
+                        handleInputChange("billingCycle", e.target.value)
                       }
                       className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                     />
@@ -369,9 +522,9 @@ export default function NewSubscriptionPage() {
                     <input
                       type="radio"
                       value="yearly"
-                      checked={formData.billingCycle === 'yearly'}
+                      checked={formData.billingCycle === "yearly"}
                       onChange={(e) =>
-                        handleInputChange('billingCycle', e.target.value)
+                        handleInputChange("billingCycle", e.target.value)
                       }
                       className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                     />
@@ -391,7 +544,9 @@ export default function NewSubscriptionPage() {
                 <input
                   type="date"
                   value={formData.startDate}
-                  onChange={(e) => handleInputChange('startDate', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("startDate", e.target.value)
+                  }
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 />
               </div>
@@ -406,12 +561,12 @@ export default function NewSubscriptionPage() {
                   type="date"
                   value={formData.expirationDate}
                   onChange={(e) =>
-                    handleInputChange('expirationDate', e.target.value)
+                    handleInputChange("expirationDate", e.target.value)
                   }
                   className={`w-full px-4 py-2 rounded-lg border ${
                     errors.expirationDate
-                      ? 'border-red-500 dark:border-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                      ? "border-red-500 dark:border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
                   } bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                 />
                 {errors.expirationDate && (
@@ -429,7 +584,7 @@ export default function NewSubscriptionPage() {
                     type="checkbox"
                     checked={formData.autoRenew}
                     onChange={(e) =>
-                      handleInputChange('autoRenew', e.target.checked)
+                      handleInputChange("autoRenew", e.target.checked)
                     }
                     className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                   />
@@ -456,7 +611,7 @@ export default function NewSubscriptionPage() {
                     type="checkbox"
                     checked={formData.isShared}
                     onChange={(e) =>
-                      handleInputChange('isShared', e.target.checked)
+                      handleInputChange("isShared", e.target.checked)
                     }
                     className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                   />
@@ -477,7 +632,10 @@ export default function NewSubscriptionPage() {
                       type="number"
                       value={formData.maxMembers}
                       onChange={(e) =>
-                        handleInputChange('maxMembers', parseInt(e.target.value) || 1)
+                        handleInputChange(
+                          "maxMembers",
+                          parseInt(e.target.value) || 1
+                        )
                       }
                       min="1"
                       className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
@@ -494,7 +652,7 @@ export default function NewSubscriptionPage() {
                       value={formData.notificationDays}
                       onChange={(e) =>
                         handleInputChange(
-                          'notificationDays',
+                          "notificationDays",
                           parseInt(e.target.value) || 7
                         )
                       }
@@ -560,7 +718,11 @@ export default function NewSubscriptionPage() {
                             type="text"
                             value={group.groupName}
                             onChange={(e) =>
-                              updateFamilyGroup(group.id, 'groupName', e.target.value)
+                              updateFamilyGroup(
+                                group.id,
+                                "groupName",
+                                e.target.value
+                              )
                             }
                             placeholder="Family A"
                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
@@ -578,7 +740,7 @@ export default function NewSubscriptionPage() {
                             onChange={(e) =>
                               updateFamilyGroup(
                                 group.id,
-                                'purchaseDate',
+                                "purchaseDate",
                                 e.target.value
                               )
                             }
@@ -597,7 +759,7 @@ export default function NewSubscriptionPage() {
                             onChange={(e) =>
                               updateFamilyGroup(
                                 group.id,
-                                'expirationDate',
+                                "expirationDate",
                                 e.target.value
                               )
                             }
@@ -614,7 +776,11 @@ export default function NewSubscriptionPage() {
                             type="text"
                             value={group.notes}
                             onChange={(e) =>
-                              updateFamilyGroup(group.id, 'notes', e.target.value)
+                              updateFamilyGroup(
+                                group.id,
+                                "notes",
+                                e.target.value
+                              )
                             }
                             placeholder="Optional notes"
                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
@@ -677,7 +843,7 @@ export default function NewSubscriptionPage() {
                                         updateMember(
                                           group.id,
                                           member.id,
-                                          'name',
+                                          "name",
                                           e.target.value
                                         )
                                       }
@@ -698,7 +864,7 @@ export default function NewSubscriptionPage() {
                                         updateMember(
                                           group.id,
                                           member.id,
-                                          'email',
+                                          "email",
                                           e.target.value
                                         )
                                       }
@@ -719,7 +885,7 @@ export default function NewSubscriptionPage() {
                                         updateMember(
                                           group.id,
                                           member.id,
-                                          'amountPaid',
+                                          "amountPaid",
                                           parseFloat(e.target.value) || 0
                                         )
                                       }
@@ -741,7 +907,7 @@ export default function NewSubscriptionPage() {
                                         updateMember(
                                           group.id,
                                           member.id,
-                                          'nextPaymentDate',
+                                          "nextPaymentDate",
                                           e.target.value
                                         )
                                       }
@@ -760,7 +926,7 @@ export default function NewSubscriptionPage() {
                                         updateMember(
                                           group.id,
                                           member.id,
-                                          'status',
+                                          "status",
                                           e.target.value
                                         )
                                       }
@@ -810,11 +976,11 @@ export default function NewSubscriptionPage() {
               className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 dark:disabled:bg-blue-800 text-white rounded-lg font-medium transition-colors flex items-center"
             >
               <Save className="w-4 h-4 mr-2" />
-              {isSubmitting ? 'Creating...' : 'Create Subscription'}
+              {isSubmitting ? "Creating..." : "Create Subscription"}
             </button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }

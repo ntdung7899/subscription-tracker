@@ -8,6 +8,7 @@ export type EmailStatus = 'sent' | 'failed'
 export interface Subscription {
   id: string
   appName: string
+  serviceKey?: string
   category: string
   price: number
   currency: string
@@ -21,6 +22,7 @@ export interface Subscription {
 
 export interface SubscriptionCreateInput {
   appName: string
+  serviceKey?: string
   category: string
   price: number
   currency?: string

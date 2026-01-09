@@ -63,6 +63,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const {
       appName,
+      serviceKey,
       category,
       price,
       currency,
@@ -75,6 +76,7 @@ export async function POST(request: Request) {
     const subscription = await prisma.subscription.create({
       data: {
         appName,
+        serviceKey: serviceKey || null,
         category,
         price: parseInt(price),
         currency: currency || 'VND',
