@@ -1,0 +1,105 @@
+{
+  "hero": {
+    "title": "Track, Share & Manage",
+    "titleHighlight": "Subscriptions Effortlessly",
+    "subtitle": "Manage shared subscriptions, track payments, and never miss a renewal.",
+    "getStarted": "Get Started Free",
+    "viewDashboard": "View Dashboard"
+  },
+  "trusted": {
+    "title": "Trusted by teams & families"
+  },
+  "features": {
+    "title": "Everything you need to manage subscriptions",
+    "subtitle": "Powerful features to help you stay organized and save money",
+    "subscriptionManagement": {
+      "title": "Subscription Management",
+      "description": "Create, track, and organize all subscriptions in one place."
+    },
+    "sharedPlans": {
+      "title": "Shared Plans & Members",
+      "description": "Manage family groups and member payments easily."
+    },
+    "smartReminders": {
+      "title": "Smart Reminders",
+      "description": "Automatic email reminders before payments are due."
+    },
+    "analytics": {
+      "title": "Analytics & Insights",
+      "description": "Visualize spending trends and optimize costs."
+    }
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Get started in minutes with our simple process",
+    "steps": {
+      "step1": {
+        "title": "Add your subscriptions",
+        "description": "Create entries for all your active subscriptions"
+      },
+      "step2": {
+        "title": "Invite members or family",
+        "description": "Share subscription costs with your group"
+      },
+      "step3": {
+        "title": "Track payments & renewals",
+        "description": "Monitor all upcoming and past payments"
+      },
+      "step4": {
+        "title": "Get reminders automatically",
+        "description": "Receive email notifications before renewals"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Beautiful dashboard, powerful insights",
+    "subtitle": "Track everything in one place with our intuitive interface",
+    "monthlyCost": "Monthly Cost",
+    "upcomingPayments": "Upcoming Payments",
+    "activeMembers": "Active Members"
+  },
+  "useCases": {
+    "title": "Built for everyone",
+    "subtitle": "Perfect for families, teams, and businesses of all sizes",
+    "family": {
+      "title": "Family subscription management",
+      "description": "Share Netflix, Spotify, and other subscriptions with family members. Track who pays what."
+    },
+    "teams": {
+      "title": "Small teams & startups",
+      "description": "Manage SaaS tools and team subscriptions. Keep track of all software expenses in one place."
+    },
+    "resellers": {
+      "title": "Resellers & account managers",
+      "description": "Manage multiple client subscriptions and billing cycles efficiently."
+    }
+  },
+  "cta": {
+    "title": "Start managing subscriptions smarter today",
+    "subtitle": "Join thousands of users who are saving time and money with our platform",
+    "createAccount": "Create Free Account",
+    "contactSales": "Contact Sales"
+  },
+  "footer": {
+    "description": "The easiest way to track, share, and manage all your subscriptions in one place. Save time and money.",
+    "product": "Product",
+    "features": "Features",
+    "pricing": "Pricing",
+    "dashboard": "Dashboard",
+    "api": "API",
+    "company": "Company",
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "copyright": "© 2026 Subscription Tracker. All rights reserved."
+  },
+  "nav": {
+    "product": "Product",
+    "howItWorks": "How it works",
+    "pricing": "Pricing",
+    "docs": "Docs",
+    "signIn": "Sign in",
+    "getStarted": "Get Started Free"
+  }
+}

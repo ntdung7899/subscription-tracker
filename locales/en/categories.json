@@ -1,0 +1,36 @@
+{
+  "title": "Categories",
+  "createCategory": "Create New Category",
+  "editCategory": "Edit Category",
+  "deleteCategory": "Delete Category",
+  "addMore": "Add More",
+  "fields": {
+    "name": "Category Name",
+    "namePlaceholder": "e.g., Finance, Education...",
+    "description": "Description",
+    "descriptionPlaceholder": "Brief description of this category...",
+    "color": "Color",
+    "status": "Status"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "actions": {
+    "create": "Create Category",
+    "update": "Update",
+    "creating": "Creating...",
+    "updating": "Updating...",
+    "adding": "Adding..."
+  },
+  "messages": {
+    "deleteConfirm": "Are you sure you want to delete category \"{{name}}\"?",
+    "createSuccess": "Category created successfully",
+    "updateSuccess": "Category updated successfully",
+    "deleteSuccess": "Category deleted successfully",
+    "createError": "Failed to create category",
+    "updateError": "Failed to update category",
+    "deleteError": "Failed to delete category",
+    "alreadyExists": "Category already exists"
+  }
+}

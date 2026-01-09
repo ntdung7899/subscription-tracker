@@ -1,0 +1,36 @@
+{
+  "title": "Danh mục",
+  "createCategory": "Tạo danh mục mới",
+  "editCategory": "Chỉnh sửa danh mục",
+  "deleteCategory": "Xóa danh mục",
+  "addMore": "Thêm mới",
+  "fields": {
+    "name": "Tên danh mục",
+    "namePlaceholder": "VD: Tài chính, Giáo dục...",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "Mô tả ngắn gọn về danh mục này...",
+    "color": "Màu sắc",
+    "status": "Trạng thái"
+  },
+  "status": {
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động"
+  },
+  "actions": {
+    "create": "Tạo danh mục",
+    "update": "Cập nhật",
+    "creating": "Đang tạo...",
+    "updating": "Đang cập nhật...",
+    "adding": "Đang thêm..."
+  },
+  "messages": {
+    "deleteConfirm": "Bạn có chắc muốn xóa danh mục \"{{name}}\"?",
+    "createSuccess": "Tạo danh mục thành công",
+    "updateSuccess": "Cập nhật danh mục thành công",
+    "deleteSuccess": "Xóa danh mục thành công",
+    "createError": "Không thể tạo danh mục",
+    "updateError": "Không thể cập nhật danh mục",
+    "deleteError": "Không thể xóa danh mục",
+    "alreadyExists": "Danh mục đã tồn tại"
+  }
+}

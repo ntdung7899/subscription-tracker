@@ -1,0 +1,66 @@
+{
+  "title": "Subscriptions",
+  "subtitle": "Manage all your subscriptions",
+  "addSubscription": "Add Subscription",
+  "quickSelect": "Quick select popular services",
+  "basicInfo": "Basic Information",
+  "sharedSettings": "Shared Subscription Settings",
+  "familyGroups": "Family Groups",
+  "addFamilyGroup": "Add Family Group",
+  "addMember": "Add Member",
+  "noSubscriptions": "No subscriptions yet",
+  "noSubscriptionsDesc": "Start by adding your first subscription",
+  "noSubscriptionsInCategory": "No subscriptions in category \"{{category}}\"",
+  "tryAnotherCategory": "Try selecting another category or add a new subscription",
+  "filterByCategory": "Filter by Category",
+  "addCategory": "Add Category",
+  "fields": {
+    "appName": "App Name",
+    "appNamePlaceholder": "Netflix, Spotify...",
+    "category": "Category",
+    "selectCategory": "Select category",
+    "price": "Price",
+    "currency": "Currency",
+    "billingCycle": "Billing Cycle",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "startDate": "Start Date",
+    "expirationDate": "Expiration Date",
+    "autoRenew": "Auto Renew",
+    "isShared": "This subscription is shared",
+    "maxMembers": "Max Members",
+    "notificationDays": "Notification Days Before Expiration",
+    "groupName": "Group Name",
+    "purchaseDate": "Purchase Date",
+    "notes": "Notes",
+    "notesPlaceholder": "Optional notes",
+    "memberName": "Name",
+    "memberEmail": "Email",
+    "amountPaid": "Amount Paid",
+    "nextPaymentDate": "Next Payment Date",
+    "status": "Status"
+  },
+  "status": {
+    "active": "Active",
+    "pending": "Pending",
+    "overdue": "Overdue"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "viewDetails": "View Details",
+    "creating": "Creating...",
+    "create": "Create Subscription",
+    "deleteConfirm": "Are you sure you want to delete this subscription?"
+  },
+  "shared": {
+    "members": "{{count}} members"
+  },
+  "notification": {
+    "remindBefore": "Remind {{days}} days before"
+  },
+  "noFamilyGroups": "No family groups added yet. Click \"Add Family Group\" to get started.",
+  "noMembers": "No members added yet",
+  "group": "Group #{{number}}",
+  "member": "Member #{{number}}"
+}

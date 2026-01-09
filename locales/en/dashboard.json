@@ -1,0 +1,20 @@
+{
+  "title": "Dashboard",
+  "welcome": "Welcome back, {{name}}",
+  "overview": "Overview",
+  "stats": {
+    "totalSubscriptions": "Total Subscriptions",
+    "activeSubscriptions": "Active Subscriptions",
+    "monthlySpending": "Monthly Spending",
+    "yearlySpending": "Yearly Spending",
+    "upcomingPayments": "Upcoming Payments"
+  },
+  "charts": {
+    "monthlySpending": "Monthly Spending Trend",
+    "categoryBreakdown": "Spending by Category",
+    "noData": "No data available"
+  },
+  "recentSubscriptions": "Recent Subscriptions",
+  "upcomingPayments": "Upcoming Payments",
+  "viewAll": "View All"
+}

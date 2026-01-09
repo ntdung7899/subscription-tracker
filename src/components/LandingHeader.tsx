@@ -3,8 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 export default function LandingHeader() {
+  const t = useTranslations("landing");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -26,10 +29,10 @@ export default function LandingHeader() {
   };
 
   const navItems = [
-    { label: "Product", href: "#features" },
-    { label: "How it works", href: "#how-it-works" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Docs", href: "/docs" },
+    { label: t("nav.product"), href: "#features" },
+    { label: t("nav.howItWorks"), href: "#how-it-works" },
+    { label: t("nav.pricing"), href: "/pricing" },
+    { label: t("nav.docs"), href: "/docs" },
   ];
 
   return (
@@ -76,17 +79,18 @@ export default function LandingHeader() {
 
           {/* Right section - Actions */}
           <div className="flex items-center space-x-4">
+            <LanguageSwitcher />
             <Link
               href="/login"
               className="hidden text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white sm:block"
             >
-              Sign in
+              {t("nav.signIn")}
             </Link>
             <Link
               href="/signup"
               className="hidden rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 sm:block"
             >
-              Get Started Free
+              {t("nav.getStarted")}
             </Link>
 
             {/* Mobile menu button */}
@@ -124,19 +128,22 @@ export default function LandingHeader() {
                 </button>
               ))}
               <div className="border-t border-gray-200 pt-4 dark:border-gray-800" />
+              <div className="pb-2">
+                <LanguageSwitcher />
+              </div>
               <Link
                 href="/login"
                 className="text-base font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Sign in
+                {t("nav.signIn")}
               </Link>
               <Link
                 href="/signup"
                 className="rounded-lg bg-blue-600 px-4 py-3 text-center text-base font-medium text-white transition-all hover:bg-blue-700"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Get Started Free
+                {t("nav.getStarted")}
               </Link>
             </nav>
           </div>

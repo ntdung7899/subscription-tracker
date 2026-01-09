@@ -1,0 +1,20 @@
+{
+  "title": "Bảng điều khiển",
+  "welcome": "Chào mừng trở lại, {{name}}",
+  "overview": "Tổng quan",
+  "stats": {
+    "totalSubscriptions": "Tổng số Subscription",
+    "activeSubscriptions": "Subscription đang hoạt động",
+    "monthlySpending": "Chi tiêu hàng tháng",
+    "yearlySpending": "Chi tiêu hàng năm",
+    "upcomingPayments": "Thanh toán sắp tới"
+  },
+  "charts": {
+    "monthlySpending": "Xu hướng chi tiêu hàng tháng",
+    "categoryBreakdown": "Chi tiêu theo danh mục",
+    "noData": "Không có dữ liệu"
+  },
+  "recentSubscriptions": "Subscription gần đây",
+  "upcomingPayments": "Thanh toán sắp tới",
+  "viewAll": "Xem tất cả"
+}

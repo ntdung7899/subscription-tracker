@@ -1,9 +1,14 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { Layers, Users, Bell, BarChart } from 'lucide-react'
 import LandingHeader from '@/components/LandingHeader'
+import { useTranslations } from 'next-intl'
 
 export default function Home() {
+  const t = useTranslations('landing')
+  
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <LandingHeader />
@@ -15,26 +20,26 @@ export default function Home() {
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-32 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl">
-              Track, Share & Manage
+              {t('hero.title')}
               <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Subscriptions Effortlessly
+                {t('hero.titleHighlight')}
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400 sm:text-xl">
-              Manage shared subscriptions, track payments, and never miss a renewal.
+              {t('hero.subtitle')}
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/login"
                 className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-3 text-base font-medium text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
               >
-                Get Started Free
+                {t('hero.getStarted')}
               </Link>
               <Link
                 href="/dashboard"
                 className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-8 py-3 text-base font-medium text-gray-700 transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:ring-offset-gray-950"
               >
-                View Dashboard
+                {t('hero.viewDashboard')}
               </Link>
             </div>
             <div className="mt-16">
@@ -50,7 +55,7 @@ export default function Home() {
       <section className="border-b border-gray-200 bg-gray-50 py-12 dark:border-gray-800 dark:bg-gray-900/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm font-medium text-gray-600 dark:text-gray-400">
-            Trusted by teams & families
+            {t('trusted.title')}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-8 opacity-50 grayscale">
             {['Netflix', 'Spotify', 'Google', 'Adobe', 'Amazon', 'Apple'].map((brand) => (
@@ -70,46 +75,46 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Everything you need to manage subscriptions
+              {t('features.title')}
             </h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-              Powerful features to help you stay organized and save money
+              {t('features.subtitle')}
             </p>
           </div>
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 icon: Layers,
-                title: 'Subscription Management',
-                description: 'Create, track, and organize all subscriptions in one place.',
+                titleKey: 'subscriptionManagement.title',
+                descriptionKey: 'subscriptionManagement.description',
               },
               {
                 icon: Users,
-                title: 'Shared Plans & Members',
-                description: 'Manage family groups and member payments easily.',
+                titleKey: 'sharedPlans.title',
+                descriptionKey: 'sharedPlans.description',
               },
               {
                 icon: Bell,
-                title: 'Smart Reminders',
-                description: 'Automatic email reminders before payments are due.',
+                titleKey: 'smartReminders.title',
+                descriptionKey: 'smartReminders.description',
               },
               {
                 icon: BarChart,
-                title: 'Analytics & Insights',
-                description: 'Visualize spending trends and optimize costs.',
+                titleKey: 'analytics.title',
+                descriptionKey: 'analytics.description',
               },
             ].map((feature) => (
               <div
-                key={feature.title}
+                key={feature.titleKey}
                 className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 transition-all hover:border-blue-500 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900 dark:hover:border-blue-500"
               >
                 <div className="mb-4 inline-flex rounded-lg bg-blue-100 p-3 dark:bg-blue-900/20">
                   <feature.icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
-                  {feature.title}
+                  {t(`features.${feature.titleKey}`)}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
+                <p className="text-gray-600 dark:text-gray-400">{t(`features.${feature.descriptionKey}`)}</p>
               </div>
             ))}
           </div>
@@ -121,18 +126,18 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              How it works
+              {t('howItWorks.title')}
             </h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-              Get started in minutes with our simple process
+              {t('howItWorks.subtitle')}
             </p>
           </div>
           <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { step: '1', title: 'Add your subscriptions', description: 'Create entries for all your active subscriptions' },
-              { step: '2', title: 'Invite members or family', description: 'Share subscription costs with your group' },
-              { step: '3', title: 'Track payments & renewals', description: 'Monitor all upcoming and past payments' },
-              { step: '4', title: 'Get reminders automatically', description: 'Receive email notifications before renewals' },
+              { step: '1', titleKey: 'steps.step1.title', descriptionKey: 'steps.step1.description' },
+              { step: '2', titleKey: 'steps.step2.title', descriptionKey: 'steps.step2.description' },
+              { step: '3', titleKey: 'steps.step3.title', descriptionKey: 'steps.step3.description' },
+              { step: '4', titleKey: 'steps.step4.title', descriptionKey: 'steps.step4.description' },
             ].map((item) => (
               <div key={item.step} className="relative">
                 <div className="flex flex-col items-center text-center">
@@ -140,9 +145,9 @@ export default function Home() {
                     {item.step}
                   </div>
                   <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                    {item.title}
+                    {t(`howItWorks.${item.titleKey}`)}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{item.description}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{t(`howItWorks.${item.descriptionKey}`)}</p>
                 </div>
               </div>
             ))}
@@ -155,25 +160,25 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Beautiful dashboard, powerful insights
+              {t('dashboard.title')}
             </h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-              Track everything in one place with our intuitive interface
+              {t('dashboard.subtitle')}
             </p>
           </div>
           <div className="mt-16">
             <div className="relative mx-auto max-w-6xl rounded-xl border border-gray-200 bg-white p-4 shadow-2xl dark:border-gray-800 dark:bg-gray-900">
               <div className="grid gap-4 md:grid-cols-3">
                 <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-800/50">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Monthly Cost</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.monthlyCost')}</p>
                   <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">$127.50</p>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-800/50">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Upcoming Payments</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.upcomingPayments')}</p>
                   <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">5</p>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-800/50">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Active Members</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('dashboard.activeMembers')}</p>
                   <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">8</p>
                 </div>
               </div>
@@ -188,35 +193,35 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Built for everyone
+              {t('useCases.title')}
             </h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-              Perfect for families, teams, and businesses of all sizes
+              {t('useCases.subtitle')}
             </p>
           </div>
           <div className="mt-16 grid gap-8 md:grid-cols-3">
             {[
               {
-                title: 'Family subscription management',
-                description: 'Share Netflix, Spotify, and other subscriptions with family members. Track who pays what.',
+                titleKey: 'family.title',
+                descriptionKey: 'family.description',
               },
               {
-                title: 'Small teams & startups',
-                description: 'Manage SaaS tools and team subscriptions. Keep track of all software expenses in one place.',
+                titleKey: 'teams.title',
+                descriptionKey: 'teams.description',
               },
               {
-                title: 'Resellers & account managers',
-                description: 'Manage multiple client subscriptions and billing cycles efficiently.',
+                titleKey: 'resellers.title',
+                descriptionKey: 'resellers.description',
               },
             ].map((useCase) => (
               <div
-                key={useCase.title}
+                key={useCase.titleKey}
                 className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-gray-800 dark:bg-gray-900"
               >
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {useCase.title}
+                  {t(`useCases.${useCase.titleKey}`)}
                 </h3>
-                <p className="mt-4 text-gray-600 dark:text-gray-400">{useCase.description}</p>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">{t(`useCases.${useCase.descriptionKey}`)}</p>
               </div>
             ))}
           </div>
@@ -311,23 +316,23 @@ export default function Home() {
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-purple-600 px-8 py-16 text-center shadow-2xl sm:px-16">
             <div className="relative z-10">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Start managing subscriptions smarter today
+                {t('cta.title')}
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-blue-100">
-                Join thousands of users who are saving time and money with our platform
+                {t('cta.subtitle')}
               </p>
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Link
                   href="/login"
                   className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3 text-base font-medium text-blue-600 transition-all hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
                 >
-                  Create Free Account
+                  {t('cta.createAccount')}
                 </Link>
                 <Link
                   href="/contact"
                   className="inline-flex items-center justify-center rounded-lg border-2 border-white px-8 py-3 text-base font-medium text-white transition-all hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
                 >
-                  Contact Sales
+                  {t('cta.contactSales')}
                 </Link>
               </div>
             </div>
@@ -343,28 +348,28 @@ export default function Home() {
             <div className="md:col-span-2">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">Subscription Tracker</h3>
               <p className="mt-4 max-w-md text-sm text-gray-600 dark:text-gray-400">
-                The easiest way to track, share, and manage all your subscriptions in one place. Save time and money.
+                {t('footer.description')}
               </p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Product</h4>
+              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{t('footer.product')}</h4>
               <ul className="mt-4 space-y-2">
-                {['Features', 'Pricing', 'Dashboard', 'API'].map((item) => (
+                {['features', 'pricing', 'dashboard', 'api'].map((item) => (
                   <li key={item}>
                     <Link href="#" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                      {item}
+                      {t(`footer.${item}`)}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Company</h4>
+              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{t('footer.company')}</h4>
               <ul className="mt-4 space-y-2">
-                {['About', 'Blog', 'Contact', 'Privacy'].map((item) => (
+                {['about', 'blog', 'contact', 'privacy'].map((item) => (
                   <li key={item}>
                     <Link href="#" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                      {item}
+                      {t(`footer.${item}`)}
                     </Link>
                   </li>
                 ))}
@@ -374,7 +379,7 @@ export default function Home() {
           <div className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                © 2026 Subscription Tracker. All rights reserved.
+                {t('footer.copyright')}
               </p>
               <div className="flex gap-6">
                 {['Twitter', 'GitHub', 'LinkedIn'].map((social) => (

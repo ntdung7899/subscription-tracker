@@ -13,8 +13,12 @@ import {
 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
+  const t = useTranslations("auth.signIn");
+  const tCommon = useTranslations("common");
+  const tErrors = useTranslations("errors");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -121,10 +125,10 @@ export default function LoginPage() {
             </span>
           </Link>
           <h1 className="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
-            Welcome back
+            {t('subtitle')}
           </h1>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Sign in to your account
+            {t('title')}
           </p>
         </div>
 

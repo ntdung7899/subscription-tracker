@@ -1,0 +1,66 @@
+{
+  "title": "Subscriptions",
+  "subtitle": "Quản lý tất cả subscriptions của bạn",
+  "addSubscription": "Thêm Subscription",
+  "quickSelect": "Chọn nhanh dịch vụ phổ biến",
+  "basicInfo": "Thông tin cơ bản",
+  "sharedSettings": "Cài đặt Subscription chia sẻ",
+  "familyGroups": "Nhóm gia đình",
+  "addFamilyGroup": "Thêm nhóm gia đình",
+  "addMember": "Thêm thành viên",
+  "noSubscriptions": "Chưa có subscription nào",
+  "noSubscriptionsDesc": "Bắt đầu bằng cách thêm subscription đầu tiên của bạn",
+  "noSubscriptionsInCategory": "Không có subscription nào trong category \"{{category}}\"",
+  "tryAnotherCategory": "Thử chọn category khác hoặc thêm subscription mới",
+  "filterByCategory": "Lọc theo Category",
+  "addCategory": "Thêm Category",
+  "fields": {
+    "appName": "Tên ứng dụng",
+    "appNamePlaceholder": "Netflix, Spotify...",
+    "category": "Danh mục",
+    "selectCategory": "Chọn danh mục",
+    "price": "Giá",
+    "currency": "Tiền tệ",
+    "billingCycle": "Chu kỳ thanh toán",
+    "monthly": "Hàng tháng",
+    "yearly": "Hàng năm",
+    "startDate": "Ngày bắt đầu",
+    "expirationDate": "Ngày hết hạn",
+    "autoRenew": "Tự động gia hạn",
+    "isShared": "Subscription này được chia sẻ",
+    "maxMembers": "Số thành viên tối đa",
+    "notificationDays": "Số ngày nhắc trước khi hết hạn",
+    "groupName": "Tên nhóm",
+    "purchaseDate": "Ngày mua",
+    "notes": "Ghi chú",
+    "notesPlaceholder": "Ghi chú tùy chọn",
+    "memberName": "Tên",
+    "memberEmail": "Email",
+    "amountPaid": "Số tiền đã trả",
+    "nextPaymentDate": "Ngày thanh toán tiếp theo",
+    "status": "Trạng thái"
+  },
+  "status": {
+    "active": "Hoạt động",
+    "pending": "Chờ xử lý",
+    "overdue": "Quá hạn"
+  },
+  "actions": {
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "viewDetails": "Xem chi tiết",
+    "creating": "Đang tạo...",
+    "create": "Tạo Subscription",
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa subscription này?"
+  },
+  "shared": {
+    "members": "{{count}} thành viên"
+  },
+  "notification": {
+    "remindBefore": "Nhắc trước {{days}} ngày"
+  },
+  "noFamilyGroups": "Chưa có nhóm gia đình nào. Nhấn \"Thêm nhóm gia đình\" để bắt đầu.",
+  "noMembers": "Chưa có thành viên nào",
+  "group": "Nhóm #{{number}}",
+  "member": "Thành viên #{{number}}"
+}

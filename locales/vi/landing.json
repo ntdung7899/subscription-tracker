@@ -1,0 +1,105 @@
+{
+  "hero": {
+    "title": "Theo Dõi, Chia Sẻ & Quản Lý",
+    "titleHighlight": "Đăng Ký Dễ Dàng",
+    "subtitle": "Quản lý đăng ký chia sẻ, theo dõi thanh toán và không bao giờ bỏ lỡ gia hạn.",
+    "getStarted": "Bắt Đầu Miễn Phí",
+    "viewDashboard": "Xem Bảng Điều Khiển"
+  },
+  "trusted": {
+    "title": "Được tin dùng bởi các nhóm & gia đình"
+  },
+  "features": {
+    "title": "Mọi thứ bạn cần để quản lý đăng ký",
+    "subtitle": "Tính năng mạnh mẽ giúp bạn luôn có tổ chức và tiết kiệm tiền",
+    "subscriptionManagement": {
+      "title": "Quản Lý Đăng Ký",
+      "description": "Tạo, theo dõi và tổ chức tất cả đăng ký ở một nơi."
+    },
+    "sharedPlans": {
+      "title": "Gói Chia Sẻ & Thành Viên",
+      "description": "Quản lý nhóm gia đình và thanh toán của thành viên dễ dàng."
+    },
+    "smartReminders": {
+      "title": "Nhắc Nhở Thông Minh",
+      "description": "Nhắc nhở qua email tự động trước khi thanh toán đến hạn."
+    },
+    "analytics": {
+      "title": "Phân Tích & Thông Tin",
+      "description": "Trực quan hóa xu hướng chi tiêu và tối ưu chi phí."
+    }
+  },
+  "howItWorks": {
+    "title": "Cách hoạt động",
+    "subtitle": "Bắt đầu trong vài phút với quy trình đơn giản của chúng tôi",
+    "steps": {
+      "step1": {
+        "title": "Thêm đăng ký của bạn",
+        "description": "Tạo mục cho tất cả các đăng ký đang hoạt động"
+      },
+      "step2": {
+        "title": "Mời thành viên hoặc gia đình",
+        "description": "Chia sẻ chi phí đăng ký với nhóm của bạn"
+      },
+      "step3": {
+        "title": "Theo dõi thanh toán & gia hạn",
+        "description": "Giám sát tất cả các thanh toán sắp tới và quá khứ"
+      },
+      "step4": {
+        "title": "Nhận nhắc nhở tự động",
+        "description": "Nhận thông báo qua email trước khi gia hạn"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Bảng điều khiển đẹp, thông tin mạnh mẽ",
+    "subtitle": "Theo dõi mọi thứ ở một nơi với giao diện trực quan",
+    "monthlyCost": "Chi Phí Hàng Tháng",
+    "upcomingPayments": "Thanh Toán Sắp Tới",
+    "activeMembers": "Thành Viên Hoạt Động"
+  },
+  "useCases": {
+    "title": "Được xây dựng cho mọi người",
+    "subtitle": "Hoàn hảo cho gia đình, nhóm và doanh nghiệp mọi quy mô",
+    "family": {
+      "title": "Quản lý đăng ký gia đình",
+      "description": "Chia sẻ Netflix, Spotify và các đăng ký khác với các thành viên gia đình. Theo dõi ai trả gì."
+    },
+    "teams": {
+      "title": "Nhóm nhỏ & startup",
+      "description": "Quản lý công cụ SaaS và đăng ký nhóm. Theo dõi tất cả chi phí phần mềm ở một nơi."
+    },
+    "resellers": {
+      "title": "Nhà phân phối & quản lý tài khoản",
+      "description": "Quản lý nhiều đăng ký khách hàng và chu kỳ thanh toán một cách hiệu quả."
+    }
+  },
+  "cta": {
+    "title": "Bắt đầu quản lý đăng ký thông minh hơn ngay hôm nay",
+    "subtitle": "Tham gia cùng hàng nghìn người dùng đang tiết kiệm thời gian và tiền bạc với nền tảng của chúng tôi",
+    "createAccount": "Tạo Tài Khoản Miễn Phí",
+    "contactSales": "Liên Hệ Bán Hàng"
+  },
+  "footer": {
+    "description": "Cách dễ nhất để theo dõi, chia sẻ và quản lý tất cả các đăng ký của bạn ở một nơi. Tiết kiệm thời gian và tiền bạc.",
+    "product": "Sản Phẩm",
+    "features": "Tính Năng",
+    "pricing": "Giá Cả",
+    "dashboard": "Bảng Điều Khiển",
+    "api": "API",
+    "company": "Công Ty",
+    "about": "Về Chúng Tôi",
+    "blog": "Blog",
+    "contact": "Liên Hệ",
+    "privacy": "Quyền Riêng Tư",
+    "copyright": "© 2026 Subscription Tracker. Tất cả quyền được bảo lưu."
+  },
+  "nav": {
+    "product": "Sản Phẩm",
+    "howItWorks": "Cách hoạt động",
+    "pricing": "Giá cả",
+    "docs": "Tài liệu",
+    "signIn": "Đăng nhập",
+    "getStarted": "Bắt Đầu Miễn Phí"
+  }
+}
