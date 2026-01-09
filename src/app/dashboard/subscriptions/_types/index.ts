@@ -22,6 +22,7 @@ export interface FamilyGroup {
 export interface SubscriptionWithRelations {
   id: string
   appName: string
+  serviceKey?: string
   category: string
   price: number
   currency: string

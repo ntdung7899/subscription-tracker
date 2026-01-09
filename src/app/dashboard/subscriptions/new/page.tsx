@@ -58,6 +58,9 @@ export default function NewSubscriptionPage() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
 
   const [formData, setFormData] = useState<FormData>({
     appName: "",
@@ -119,6 +122,45 @@ export default function NewSubscriptionPage() {
   }, []);
 
   const currencies = ["VND", "USD", "EUR", "GBP", "JPY"];
+
+  const handleAddCategory = async () => {
+    if (!newCategoryName.trim()) {
+      return;
+    }
+
+    setIsAddingCategory(true);
+    try {
+      const response = await fetch('/api/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          categoryName: newCategoryName.trim(),
+          status: 'active',
+        }),
+      });
+
+      if (response.ok) {
+        const newCategory = await response.json();
+        // Add new category to the list
+        setCategories((prev) => [...prev, newCategory.categoryName]);
+        // Select the new category
+        setFormData((prev) => ({ ...prev, category: newCategory.categoryName }));
+        // Reset and close modal
+        setNewCategoryName("");
+        setShowAddCategory(false);
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to add category');
+      }
+    } catch (error) {
+      console.error('Error adding category:', error);
+      alert('Failed to add category');
+    } finally {
+      setIsAddingCategory(false);
+    }
+  };
 
   const handleQuickSelect = (serviceName: string, serviceKey: string, price: number) => {
     setSelectedService(serviceKey);
@@ -427,24 +469,34 @@ export default function NewSubscriptionPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Category <span className="text-red-500">*</span>
                 </label>
-                <select
-                  value={formData.category}
-                  onChange={(e) =>
-                    handleInputChange("category", e.target.value)
-                  }
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    errors.category
-                      ? "border-red-500 dark:border-red-500"
-                      : "border-gray-300 dark:border-gray-600"
-                  } bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
-                >
-                  <option value="">Select category</option>
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex space-x-2">
+                  <select
+                    value={formData.category}
+                    onChange={(e) =>
+                      handleInputChange("category", e.target.value)
+                    }
+                    className={`flex-1 px-4 py-2 rounded-lg border ${
+                      errors.category
+                        ? "border-red-500 dark:border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    } bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
+                  >
+                    <option value="">Select category</option>
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddCategory(true)}
+                    className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center"
+                    title="Add new category"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
                 {errors.category && (
                   <p className="mt-1 text-sm text-red-500 flex items-center">
                     <AlertCircle className="w-4 h-4 mr-1" />
@@ -980,6 +1032,70 @@ export default function NewSubscriptionPage() {
             </button>
           </div>
         </form>
+
+        {/* Add Category Modal */}
+        {showAddCategory && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Add New Category
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddCategory(false);
+                    setNewCategoryName("");
+                  }}
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Category Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddCategory();
+                    }
+                  }}
+                  placeholder="e.g., Finance, Education..."
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  autoFocus
+                />
+              </div>
+
+              <div className="flex items-center justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddCategory(false);
+                    setNewCategoryName("");
+                  }}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddCategory}
+                  disabled={!newCategoryName.trim() || isAddingCategory}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 dark:disabled:bg-blue-800 text-white rounded-lg font-medium transition-colors"
+                >
+                  {isAddingCategory ? "Adding..." : "Add Category"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

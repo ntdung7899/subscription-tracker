@@ -18,6 +18,7 @@ import {
   SubscriptionWithRelations,
   CATEGORY_COLORS,
 } from './_types'
+import { ServiceIcons, getServiceIcon } from '@/assets/serviceIcons'
 
 interface Category {
   id: string
@@ -405,18 +406,35 @@ export default function SubscriptionsPage() {
                 {/* Card Header */}
                 <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {subscription.appName}
-                      </h3>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCategoryColor(
-                          subscription.category
-                        )}`}
-                        style={getCategoryStyle(subscription.category)}
-                      >
-                        {subscription.category}
-                      </span>
+                    <div className="flex items-start space-x-3 flex-1">
+                      {/* Service Icon */}
+                      {subscription.serviceKey && (() => {
+                        const serviceIcon = ServiceIcons[subscription.serviceKey] || ServiceIcons.other;
+                        return (
+                          <div
+                            className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl flex-shrink-0 shadow-sm"
+                            style={{
+                              background: serviceIcon.gradient,
+                            }}
+                          >
+                            {serviceIcon.icon}
+                          </div>
+                        );
+                      })()}
+                      
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">
+                          {subscription.appName}
+                        </h3>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCategoryColor(
+                            subscription.category
+                          )}`}
+                          style={getCategoryStyle(subscription.category)}
+                        >
+                          {subscription.category}
+                        </span>
+                      </div>
                     </div>
                     
                     {/* Menu */}
