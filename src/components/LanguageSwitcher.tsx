@@ -110,3 +110,5 @@ export function LanguageSwitcher() {
     </div>
   );
 }
+
+export default LanguageSwitcher;

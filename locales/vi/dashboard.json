@@ -1,7 +1,8 @@
 {
   "title": "Bảng điều khiển",
   "subtitle": "Tổng quan về các đăng ký của bạn",
-  "welcome": "Chào mừng trở lại, {{name}}",
+  "backToHome": "Về trang chủ",
+  "welcome": "Chào mừng trở lại, {name}",
   "overview": "Tổng quan",
   "stats": {
     "totalSubscriptions": "Tổng đăng ký",

@@ -1,7 +1,8 @@
 {
   "title": "Dashboard",
   "subtitle": "Overview of your subscriptions",
-  "welcome": "Welcome back, {{name}}",
+  "backToHome": "Back to Home",
+  "welcome": "Welcome back, {name}",
   "overview": "Overview",
   "stats": {
     "totalSubscriptions": "Total Subscriptions",
