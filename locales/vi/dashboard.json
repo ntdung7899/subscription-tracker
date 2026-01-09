@@ -1,20 +1,26 @@
 {
   "title": "Bảng điều khiển",
+  "subtitle": "Tổng quan về các đăng ký của bạn",
   "welcome": "Chào mừng trở lại, {{name}}",
   "overview": "Tổng quan",
   "stats": {
-    "totalSubscriptions": "Tổng số Subscription",
-    "activeSubscriptions": "Subscription đang hoạt động",
+    "totalSubscriptions": "Tổng đăng ký",
+    "activeSubscriptions": "Đăng ký hoạt động",
+    "monthlyCost": "Chi phí hàng tháng",
     "monthlySpending": "Chi tiêu hàng tháng",
     "yearlySpending": "Chi tiêu hàng năm",
-    "upcomingPayments": "Thanh toán sắp tới"
+    "expiringSoon": "Sắp hết hạn",
+    "totalMembers": "Tổng thành viên"
   },
   "charts": {
     "monthlySpending": "Xu hướng chi tiêu hàng tháng",
     "categoryBreakdown": "Chi tiêu theo danh mục",
     "noData": "Không có dữ liệu"
   },
-  "recentSubscriptions": "Subscription gần đây",
+  "recentSubscriptions": "Đăng ký gần đây",
   "upcomingPayments": "Thanh toán sắp tới",
-  "viewAll": "Xem tất cả"
+  "viewAll": "Xem tất cả",
+  "error": {
+    "loadingData": "Không thể tải dữ liệu bảng điều khiển"
+  }
 }

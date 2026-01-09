@@ -1,8 +1,14 @@
 {
-  "title": "Subscriptions",
-  "subtitle": "Quản lý tất cả subscriptions của bạn",
-  "addSubscription": "Thêm Subscription",
-  "quickSelect": "Chọn nhanh dịch vụ phổ biến",
+  "title": "Đăng ký",
+  "subtitle": "Quản lý tất cả đăng ký của bạn",
+  "addSubscription": "Thêm đăng ký",
+  "newSubscription": {
+    "title": "Thêm đăng ký mới",
+    "subtitle": "Điền thông tin để tạo đăng ký mới"
+  },
+  "quickSelect": "🚀 Chọn nhanh dịch vụ phổ biến",
+  "showMore": "Xem thêm {count} dịch vụ",
+  "showLess": "Ẩn bớt",
   "basicInfo": "Thông tin cơ bản",
   "sharedSettings": "Cài đặt Subscription chia sẻ",
   "familyGroups": "Nhóm gia đình",
@@ -10,7 +16,7 @@
   "addMember": "Thêm thành viên",
   "noSubscriptions": "Chưa có subscription nào",
   "noSubscriptionsDesc": "Bắt đầu bằng cách thêm subscription đầu tiên của bạn",
-  "noSubscriptionsInCategory": "Không có subscription nào trong category \"{{category}}\"",
+  "noSubscriptionsInCategory": "Không có subscription nào trong category \"{category}\"",
   "tryAnotherCategory": "Thử chọn category khác hoặc thêm subscription mới",
   "filterByCategory": "Lọc theo Category",
   "addCategory": "Thêm Category",
@@ -51,16 +57,19 @@
     "viewDetails": "Xem chi tiết",
     "creating": "Đang tạo...",
     "create": "Tạo Subscription",
-    "deleteConfirm": "Bạn có chắc chắn muốn xóa subscription này?"
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa subscription này?",
+    "cancel": "Hủy",
+    "add": "Thêm danh mục",
+    "adding": "Đang thêm..."
   },
   "shared": {
-    "members": "{{count}} thành viên"
+    "members": "{count} thành viên"
   },
   "notification": {
-    "remindBefore": "Nhắc trước {{days}} ngày"
+    "remindBefore": "Nhắc trước {days} ngày"
   },
   "noFamilyGroups": "Chưa có nhóm gia đình nào. Nhấn \"Thêm nhóm gia đình\" để bắt đầu.",
   "noMembers": "Chưa có thành viên nào",
-  "group": "Nhóm #{{number}}",
-  "member": "Thành viên #{{number}}"
+  "group": "Nhóm #{number}",
+  "member": "Thành viên #{number}"
 }

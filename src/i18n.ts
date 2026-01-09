@@ -8,12 +8,12 @@ export default getRequestConfig(async () => {
   return {
     locale,
     messages: {
-      ...(await import(`../locales/${locale}/common.json`)).default,
-      ...(await import(`../locales/${locale}/auth.json`)).default,
-      ...(await import(`../locales/${locale}/dashboard.json`)).default,
-      ...(await import(`../locales/${locale}/subscriptions.json`)).default,
-      ...(await import(`../locales/${locale}/categories.json`)).default,
-      ...(await import(`../locales/${locale}/errors.json`)).default,
+      common: (await import(`../locales/${locale}/common.json`)).default,
+      auth: (await import(`../locales/${locale}/auth.json`)).default,
+      dashboard: (await import(`../locales/${locale}/dashboard.json`)).default,
+      subscriptions: (await import(`../locales/${locale}/subscriptions.json`)).default,
+      categories: (await import(`../locales/${locale}/categories.json`)).default,
+      errors: (await import(`../locales/${locale}/errors.json`)).default,
       landing: (await import(`../locales/${locale}/landing.json`)).default,
     }
   };

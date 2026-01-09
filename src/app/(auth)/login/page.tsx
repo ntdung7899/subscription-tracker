@@ -39,13 +39,13 @@ export default function LoginPage() {
     const newErrors: Record<string, string> = {};
 
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = tErrors('required.email');
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = tErrors('invalid.email');
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = tErrors('required.password');
     }
 
     setErrors(newErrors);
@@ -58,7 +58,7 @@ export default function LoginPage() {
     setSubmitSuccess(false);
 
     if (!validateForm()) {
-      toast.error("Vui lòng điền đầy đủ thông tin hợp lệ");
+      toast.error(tErrors('validation.pleaseFillRequired'));
       return;
     }
 
@@ -72,13 +72,13 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        toast.error("Email hoặc mật khẩu không đúng");
+        toast.error(tErrors('auth.invalidCredentials'));
         // throw new Error(result.error);
       }
 
       if (result?.ok) {
         setSubmitSuccess(true);
-        toast.success("Đăng nhập thành công!");
+        toast.success(t('success.login'));
         setTimeout(() => {
           window.location.href = "/dashboard";
         }, 1000);
@@ -158,7 +158,7 @@ export default function LoginPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Email address <span className="text-red-500">*</span>
+                {t('emailLabel')} <span className="text-red-500">*</span>
               </label>
               <div className="relative mt-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -175,7 +175,7 @@ export default function LoginPage() {
                       ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : "border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700"
                   } bg-white py-2.5 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500`}
-                  placeholder="john@example.com"
+                  placeholder={t('emailPlaceholder')}
                 />
               </div>
               {errors.email && (
@@ -189,7 +189,7 @@ export default function LoginPage() {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Password <span className="text-red-500">*</span>
+                {t('passwordLabel')} <span className="text-red-500">*</span>
               </label>
               <div className="relative mt-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -206,7 +206,7 @@ export default function LoginPage() {
                       ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                       : "border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700"
                   } bg-white py-2.5 pl-10 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500`}
-                  placeholder="••••••••"
+                  placeholder={t('passwordPlaceholder')}
                 />
                 <button
                   type="button"
@@ -236,14 +236,14 @@ export default function LoginPage() {
                   className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800"
                 />
                 <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                  Remember me
+                  {t('rememberMe')}
                 </span>
               </label>
               <Link
                 href="/forgot-password"
                 className="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400"
               >
-                Forgot password?
+                {t('forgotPassword')}
               </Link>
             </div>
 
@@ -256,10 +256,10 @@ export default function LoginPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in...
+                  {t('signingIn')}
                 </>
               ) : (
-                "Sign in"
+                t('submit')
               )}
             </button>
           </form>
@@ -271,7 +271,7 @@ export default function LoginPage() {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="bg-white px-2 text-gray-500 dark:bg-gray-900 dark:text-gray-400">
-                or
+                {tCommon('or')}
               </span>
             </div>
           </div>
@@ -301,7 +301,7 @@ export default function LoginPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Continue with Google
+              {t('googleSignIn')}
             </button>
             <button
               type="button"
@@ -315,19 +315,19 @@ export default function LoginPage() {
                   clipRule="evenodd"
                 />
               </svg>
-              Continue with GitHub
+              {t('githubSignIn')}
             </button>
           </div>
         </div>
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Don't have an account?{" "}
+          {t('noAccount')}{" "}
           <Link
             href="/signup"
             className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400"
           >
-            Sign up
+            {t('signUpLink')}
           </Link>
         </p>
       </div>

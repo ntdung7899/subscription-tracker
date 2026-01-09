@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from 'next-intl';
 import {
   Plus,
   Trash2,
@@ -51,6 +52,8 @@ interface FormData {
 }
 
 export default function NewSubscriptionPage() {
+  const t = useTranslations("subscriptions");
+  const tErrors = useTranslations("errors");
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -330,10 +333,10 @@ export default function NewSubscriptionPage() {
         router.push("/dashboard/subscriptions");
       } else {
         const error = await response.json();
-        setErrors({ submit: error.message || "Failed to create subscription" });
+        setErrors({ submit: error.message || tErrors('failedToCreate') });
       }
     } catch (error) {
-      setErrors({ submit: "Network error. Please try again." });
+      setErrors({ submit: tErrors('networkError') });
     } finally {
       setIsSubmitting(false);
     }
@@ -346,10 +349,10 @@ export default function NewSubscriptionPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Add New Subscription
+            {t('newSubscription.title')}
           </h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Fill in the details to create a new subscription
+            {t('newSubscription.subtitle')}
           </p>
         </div>
 
@@ -357,7 +360,7 @@ export default function NewSubscriptionPage() {
           {/* Quick Select Popular Services */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              🚀 Chọn nhanh dịch vụ phổ biến
+              {t('quickSelect')}
             </h2>
             
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -420,12 +423,12 @@ export default function NewSubscriptionPage() {
                 {showAllServices ? (
                   <>
                     <ChevronUp className="w-4 h-4 mr-2" />
-                    Ẩn bớt
+                    {t('showLess')}
                   </>
                 ) : (
                   <>
                     <ChevronDown className="w-4 h-4 mr-2" />
-                    Xem thêm ({allServices.length - 7} dịch vụ)
+                    {t('showMore', { count: allServices.length - 7 })}
                   </>
                 )}
               </button>
@@ -436,20 +439,20 @@ export default function NewSubscriptionPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
               <DollarSign className="w-5 h-5 mr-2" />
-              Basic Information
+              {t('basicInfo')}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* App Name */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  App Name <span className="text-red-500">*</span>
+                  {t('fields.appName')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.appName}
                   onChange={(e) => handleInputChange("appName", e.target.value)}
-                  placeholder="Netflix, Spotify..."
+                  placeholder={t('fields.appNamePlaceholder')}
                   className={`w-full px-4 py-2 rounded-lg border ${
                     errors.appName
                       ? "border-red-500 dark:border-red-500"
@@ -467,7 +470,7 @@ export default function NewSubscriptionPage() {
               {/* Category */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Category <span className="text-red-500">*</span>
+                  {t('fields.category')} <span className="text-red-500">*</span>
                 </label>
                 <div className="flex space-x-2">
                   <select
@@ -481,7 +484,7 @@ export default function NewSubscriptionPage() {
                         : "border-gray-300 dark:border-gray-600"
                     } bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                   >
-                    <option value="">Select category</option>
+                    <option value="">{t('fields.selectCategory')}</option>
                     {categories.map((cat) => (
                       <option key={cat} value={cat}>
                         {cat}
@@ -508,7 +511,7 @@ export default function NewSubscriptionPage() {
               {/* Price */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Price <span className="text-red-500">*</span>
+                  {t('fields.price')} <span className="text-red-500">*</span>
                 </label>
                 <div className="flex space-x-2">
                   <input
@@ -553,7 +556,7 @@ export default function NewSubscriptionPage() {
               {/* Billing Cycle */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Billing Cycle
+                  {t('fields.billingCycle')}
                 </label>
                 <div className="flex space-x-4">
                   <label className="flex items-center space-x-2 cursor-pointer">
@@ -567,7 +570,7 @@ export default function NewSubscriptionPage() {
                       className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                     />
                     <span className="text-sm text-gray-700 dark:text-gray-300">
-                      Monthly
+                      {t('fields.monthly')}
                     </span>
                   </label>
                   <label className="flex items-center space-x-2 cursor-pointer">
@@ -581,7 +584,7 @@ export default function NewSubscriptionPage() {
                       className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                     />
                     <span className="text-sm text-gray-700 dark:text-gray-300">
-                      Yearly
+                      {t('fields.yearly')}
                     </span>
                   </label>
                 </div>
@@ -591,7 +594,7 @@ export default function NewSubscriptionPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                   <Calendar className="w-4 h-4 mr-1.5" />
-                  Start Date
+                  {t('fields.startDate')}
                 </label>
                 <input
                   type="date"
@@ -607,7 +610,7 @@ export default function NewSubscriptionPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                   <Calendar className="w-4 h-4 mr-1.5" />
-                  Expiration Date <span className="text-red-500 ml-1">*</span>
+                  {t('fields.expirationDate')} <span className="text-red-500 ml-1">*</span>
                 </label>
                 <input
                   type="date"
@@ -641,7 +644,7 @@ export default function NewSubscriptionPage() {
                     className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Auto Renew
+                    {t('fields.autoRenew')}
                   </span>
                 </label>
               </div>
@@ -652,7 +655,7 @@ export default function NewSubscriptionPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
               <Users className="w-5 h-5 mr-2" />
-              Shared Subscription Settings
+              {t('sharedSettings')}
             </h2>
 
             <div className="space-y-4">
@@ -668,7 +671,7 @@ export default function NewSubscriptionPage() {
                     className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    This subscription is shared
+                    {t('fields.isShared')}
                   </span>
                 </label>
               </div>
@@ -678,7 +681,7 @@ export default function NewSubscriptionPage() {
                   {/* Max Members */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Max Members
+                      {t('fields.maxMembers')}
                     </label>
                     <input
                       type="number"
@@ -697,7 +700,7 @@ export default function NewSubscriptionPage() {
                   {/* Notification Days */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Notification Days Before Expiration
+                      {t('fields.notificationDays')}
                     </label>
                     <input
                       type="number"
@@ -723,7 +726,7 @@ export default function NewSubscriptionPage() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
                   <Calendar className="w-5 h-5 mr-2" />
-                  Family Groups
+                  {t('familyGroups')}
                 </h2>
                 <button
                   type="button"
@@ -731,14 +734,13 @@ export default function NewSubscriptionPage() {
                   className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-medium"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add Family Group</span>
+                  <span>{t('addFamilyGroup')}</span>
                 </button>
               </div>
 
               {formData.familyGroups.length === 0 ? (
                 <p className="text-center text-gray-500 dark:text-gray-400 py-8">
-                  No family groups added yet. Click "Add Family Group" to get
-                  started.
+                  {t('noFamilyGroups')}
                 </p>
               ) : (
                 <div className="space-y-6">
@@ -749,7 +751,7 @@ export default function NewSubscriptionPage() {
                     >
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="font-medium text-gray-900 dark:text-white">
-                          Group #{groupIndex + 1}
+                          {t('group', { number: groupIndex + 1 })}
                         </h3>
                         <button
                           type="button"
@@ -764,7 +766,7 @@ export default function NewSubscriptionPage() {
                         {/* Group Name */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Group Name
+                            {t('fields.groupName')}
                           </label>
                           <input
                             type="text"
@@ -784,7 +786,7 @@ export default function NewSubscriptionPage() {
                         {/* Purchase Date */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Purchase Date
+                            {t('fields.purchaseDate')}
                           </label>
                           <input
                             type="date"
@@ -803,7 +805,7 @@ export default function NewSubscriptionPage() {
                         {/* Expiration Date */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Expiration Date
+                            {t('fields.expirationDate')}
                           </label>
                           <input
                             type="date"
@@ -822,7 +824,7 @@ export default function NewSubscriptionPage() {
                         {/* Notes */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Notes
+                            {t('fields.notes')}
                           </label>
                           <input
                             type="text"
@@ -834,7 +836,7 @@ export default function NewSubscriptionPage() {
                                 e.target.value
                               )
                             }
-                            placeholder="Optional notes"
+                            placeholder={t('fields.notesPlaceholder')}
                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                           />
                         </div>
@@ -844,7 +846,7 @@ export default function NewSubscriptionPage() {
                       <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div className="flex items-center justify-between mb-3">
                           <h4 className="text-sm font-medium text-gray-900 dark:text-white">
-                            Members
+                            {t('fields.memberName')}
                           </h4>
                           <button
                             type="button"
@@ -852,13 +854,13 @@ export default function NewSubscriptionPage() {
                             className="flex items-center space-x-1 px-3 py-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-sm"
                           >
                             <Plus className="w-3 h-3" />
-                            <span>Add Member</span>
+                            <span>{t('addMember')}</span>
                           </button>
                         </div>
 
                         {group.members.length === 0 ? (
                           <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
-                            No members added yet
+                            {t('noMembers')}
                           </p>
                         ) : (
                           <div className="space-y-3">
@@ -869,7 +871,7 @@ export default function NewSubscriptionPage() {
                               >
                                 <div className="flex items-center justify-between mb-3">
                                   <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                                    Member #{memberIndex + 1}
+                                    {t('member', { number: memberIndex + 1 })}
                                   </span>
                                   <button
                                     type="button"
@@ -886,7 +888,7 @@ export default function NewSubscriptionPage() {
                                   {/* Name */}
                                   <div>
                                     <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                      Name
+                                      {t('fields.memberName')}
                                     </label>
                                     <input
                                       type="text"
@@ -907,7 +909,7 @@ export default function NewSubscriptionPage() {
                                   {/* Email */}
                                   <div>
                                     <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                      Email
+                                      {t('fields.memberEmail')}
                                     </label>
                                     <input
                                       type="email"
@@ -928,7 +930,7 @@ export default function NewSubscriptionPage() {
                                   {/* Amount Paid */}
                                   <div>
                                     <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                      Amount Paid
+                                      {t('fields.amountPaid')}
                                     </label>
                                     <input
                                       type="number"
@@ -950,7 +952,7 @@ export default function NewSubscriptionPage() {
                                   {/* Next Payment Date */}
                                   <div>
                                     <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                      Next Payment Date
+                                      {t('fields.nextPaymentDate')}
                                     </label>
                                     <input
                                       type="date"
@@ -970,7 +972,7 @@ export default function NewSubscriptionPage() {
                                   {/* Status */}
                                   <div>
                                     <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                      Status
+                                      {t('fields.status')}
                                     </label>
                                     <select
                                       value={member.status}
@@ -984,9 +986,9 @@ export default function NewSubscriptionPage() {
                                       }
                                       className="w-full px-3 py-1.5 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                                     >
-                                      <option value="active">Active</option>
-                                      <option value="pending">Pending</option>
-                                      <option value="overdue">Overdue</option>
+                                      <option value="active">{t('status.active')}</option>
+                                      <option value="pending">{t('status.pending')}</option>
+                                      <option value="overdue">{t('status.overdue')}</option>
                                     </select>
                                   </div>
                                 </div>
@@ -1020,7 +1022,7 @@ export default function NewSubscriptionPage() {
               className="px-6 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               <X className="w-4 h-4 inline mr-2" />
-              Cancel
+              {t('actions.cancel')}
             </button>
             <button
               type="submit"
@@ -1028,7 +1030,7 @@ export default function NewSubscriptionPage() {
               className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 dark:disabled:bg-blue-800 text-white rounded-lg font-medium transition-colors flex items-center"
             >
               <Save className="w-4 h-4 mr-2" />
-              {isSubmitting ? "Creating..." : "Create Subscription"}
+              {isSubmitting ? t('actions.creating') : t('actions.create')}
             </button>
           </div>
         </form>
@@ -1039,7 +1041,7 @@ export default function NewSubscriptionPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Add New Category
+                  {t('addCategory')}
                 </h3>
                 <button
                   type="button"
@@ -1055,7 +1057,7 @@ export default function NewSubscriptionPage() {
 
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Category Name <span className="text-red-500">*</span>
+                  {t('fields.category')} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -1082,7 +1084,7 @@ export default function NewSubscriptionPage() {
                   }}
                   className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
-                  Cancel
+                  {t('actions.cancel')}
                 </button>
                 <button
                   type="button"
@@ -1090,7 +1092,7 @@ export default function NewSubscriptionPage() {
                   disabled={!newCategoryName.trim() || isAddingCategory}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 dark:disabled:bg-blue-800 text-white rounded-lg font-medium transition-colors"
                 >
-                  {isAddingCategory ? "Adding..." : "Add Category"}
+                  {isAddingCategory ? t('actions.adding') : t('actions.add')}
                 </button>
               </div>
             </div>

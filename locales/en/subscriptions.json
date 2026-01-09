@@ -2,7 +2,13 @@
   "title": "Subscriptions",
   "subtitle": "Manage all your subscriptions",
   "addSubscription": "Add Subscription",
-  "quickSelect": "Quick select popular services",
+  "newSubscription": {
+    "title": "Add New Subscription",
+    "subtitle": "Fill in the details to create a new subscription"
+  },
+  "quickSelect": "🚀 Quick select popular services",
+  "showMore": "Show more - {count} services",
+  "showLess": "Show less",
   "basicInfo": "Basic Information",
   "sharedSettings": "Shared Subscription Settings",
   "familyGroups": "Family Groups",
@@ -10,7 +16,7 @@
   "addMember": "Add Member",
   "noSubscriptions": "No subscriptions yet",
   "noSubscriptionsDesc": "Start by adding your first subscription",
-  "noSubscriptionsInCategory": "No subscriptions in category \"{{category}}\"",
+  "noSubscriptionsInCategory": "No subscriptions in category \"{category}\"",
   "tryAnotherCategory": "Try selecting another category or add a new subscription",
   "filterByCategory": "Filter by Category",
   "addCategory": "Add Category",
@@ -51,16 +57,19 @@
     "viewDetails": "View Details",
     "creating": "Creating...",
     "create": "Create Subscription",
-    "deleteConfirm": "Are you sure you want to delete this subscription?"
+    "deleteConfirm": "Are you sure you want to delete this subscription?",
+    "cancel": "Cancel",
+    "add": "Add Category",
+    "adding": "Adding..."
   },
   "shared": {
-    "members": "{{count}} members"
+    "members": "{count} members"
   },
   "notification": {
-    "remindBefore": "Remind {{days}} days before"
+    "remindBefore": "Remind {days} days before"
   },
   "noFamilyGroups": "No family groups added yet. Click \"Add Family Group\" to get started.",
   "noMembers": "No members added yet",
-  "group": "Group #{{number}}",
-  "member": "Member #{{number}}"
+  "group": "Group #{number}",
+  "member": "Member #{number}"
 }

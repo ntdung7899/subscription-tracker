@@ -4,8 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff, Loader2, Mail, Lock, User, CheckCircle2, XCircle } from 'lucide-react'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 export default function SignUpPage() {
+  const t = useTranslations("auth.signUp")
+  const tCommon = useTranslations("common")
+  const tErrors = useTranslations("errors")
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -27,38 +31,38 @@ export default function SignUpPage() {
 
   const getPasswordStrength = (password: string) => {
     if (password.length === 0) return { strength: 0, label: '', color: '' }
-    if (password.length < 8) return { strength: 1, label: 'Weak', color: 'bg-red-500' }
-    if (password.length < 12) return { strength: 2, label: 'Medium', color: 'bg-yellow-500' }
-    return { strength: 3, label: 'Strong', color: 'bg-green-500' }
+    if (password.length < 8) return { strength: 1, label: t('weak'), color: 'bg-red-500' }
+    if (password.length < 12) return { strength: 2, label: t('medium'), color: 'bg-yellow-500' }
+    return { strength: 3, label: t('strong'), color: 'bg-green-500' }
   }
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required'
+      newErrors.fullName = tErrors('required.name')
     }
 
     if (!formData.email) {
-      newErrors.email = 'Email is required'
+      newErrors.email = tErrors('required.email')
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
+      newErrors.email = tErrors('invalid.email')
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required'
+      newErrors.password = tErrors('required.password')
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters'
+      newErrors.password = tErrors('invalid.passwordLength')
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password'
+      newErrors.confirmPassword = tErrors('required.confirmPassword')
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match'
+      newErrors.confirmPassword = tErrors('invalid.passwordMatch')
     }
 
     if (!formData.agreedToTerms) {
-      newErrors.agreedToTerms = 'You must agree to the terms and privacy policy'
+      newErrors.agreedToTerms = tErrors('required.terms')
     }
 
     setErrors(newErrors)
@@ -71,7 +75,7 @@ export default function SignUpPage() {
     setSubmitSuccess(false)
 
     if (!validateForm()) {
-      toast.error('Vui lòng điền đầy đủ thông tin hợp lệ')
+      toast.error(t('error.validation'))
       return
     }
 
@@ -93,12 +97,12 @@ export default function SignUpPage() {
       const data = await response.json()
 
       if (!response.ok) {
-        toast.error(data.message || 'Tạo tài khoản thất bại')
+        toast.error(data.message || t('error.generic'))
         throw new Error(data.message || 'Failed to create account')
       }
 
       setSubmitSuccess(true)
-      toast.success('Tạo tài khoản thành công! Đang chuyển đến trang đăng nhập...')
+      toast.success(t('success.created'))
       // Redirect to login or dashboard after success
       setTimeout(() => {
         window.location.href = '/login'
@@ -144,10 +148,10 @@ export default function SignUpPage() {
             </span>
           </Link>
           <h1 className="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
-            Create your account
+            {t('title')}
           </h1>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Start managing subscriptions in minutes
+            {t('subtitle')}
           </p>
         </div>
 
@@ -157,7 +161,7 @@ export default function SignUpPage() {
           {submitSuccess && (
             <div className="mb-6 flex items-center gap-2 rounded-lg bg-green-50 p-4 text-sm text-green-800 dark:bg-green-900/20 dark:text-green-400">
               <CheckCircle2 className="h-5 w-5" />
-              <span>Account created successfully! Redirecting...</span>
+              <span>{t('successMessage')}</span>
             </div>
           )}
 
@@ -174,7 +178,7 @@ export default function SignUpPage() {
             {/* Full Name */}
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Full name <span className="text-red-500">*</span>
+                {t('nameLabel')} <span className="text-red-500">*</span>
               </label>
               <div className="relative mt-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -191,7 +195,7 @@ export default function SignUpPage() {
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700'
                   } bg-white py-2.5 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500`}
-                  placeholder="John Doe"
+                  placeholder={t('namePlaceholder')}
                 />
               </div>
               {errors.fullName && (
@@ -202,7 +206,7 @@ export default function SignUpPage() {
             {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Email address <span className="text-red-500">*</span>
+                {t('emailLabel')} <span className="text-red-500">*</span>
               </label>
               <div className="relative mt-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -219,7 +223,7 @@ export default function SignUpPage() {
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700'
                   } bg-white py-2.5 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500`}
-                  placeholder="john@example.com"
+                  placeholder={t('emailPlaceholder')}
                 />
               </div>
               {errors.email && (
@@ -230,7 +234,7 @@ export default function SignUpPage() {
             {/* Password */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Password <span className="text-red-500">*</span>
+                {t('passwordLabel')} <span className="text-red-500">*</span>
               </label>
               <div className="relative mt-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -247,7 +251,7 @@ export default function SignUpPage() {
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700'
                   } bg-white py-2.5 pl-10 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500`}
-                  placeholder="••••••••"
+                  placeholder={t('passwordPlaceholder')}
                 />
                 <button
                   type="button"
@@ -264,7 +268,7 @@ export default function SignUpPage() {
               {formData.password && (
                 <div className="mt-2">
                   <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
-                    <span>Password strength:</span>
+                    <span>{t('passwordStrength')}</span>
                     <span className={`font-medium ${
                       passwordStrength.strength === 1 ? 'text-red-500' :
                       passwordStrength.strength === 2 ? 'text-yellow-500' :
@@ -295,7 +299,7 @@ export default function SignUpPage() {
             {/* Confirm Password */}
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Confirm password <span className="text-red-500">*</span>
+                {t('confirmPasswordLabel')} <span className="text-red-500">*</span>
               </label>
               <div className="relative mt-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -312,7 +316,7 @@ export default function SignUpPage() {
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700'
                   } bg-white py-2.5 pl-10 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500`}
-                  placeholder="••••••••"
+                  placeholder={t('confirmPasswordPlaceholder')}
                 />
                 <button
                   type="button"
@@ -344,13 +348,13 @@ export default function SignUpPage() {
                   }`}
                 />
                 <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                  I agree to the{' '}
+                  {t('agreeToTerms').split(t('termsLink'))[0]}
                   <Link href="/terms" className="text-blue-600 hover:text-blue-700 dark:text-blue-400">
-                    Terms of Service
-                  </Link>{' '}
-                  and{' '}
+                    {t('termsLink')}
+                  </Link>
+                  {' '}{tCommon('and')}{' '}
                   <Link href="/privacy" className="text-blue-600 hover:text-blue-700 dark:text-blue-400">
-                    Privacy Policy
+                    {t('privacyLink')}
                   </Link>
                 </span>
               </label>
@@ -368,10 +372,10 @@ export default function SignUpPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating account...
+                  {t('creating')}
                 </>
               ) : (
-                'Create account'
+                t('submit')
               )}
             </button>
           </form>
@@ -383,7 +387,7 @@ export default function SignUpPage() {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="bg-white px-2 text-gray-500 dark:bg-gray-900 dark:text-gray-400">
-                or
+                {tCommon('or')}
               </span>
             </div>
           </div>
@@ -413,7 +417,7 @@ export default function SignUpPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Continue with Google
+              {t('googleSignUp')}
             </button>
             <button
               type="button"
@@ -427,19 +431,19 @@ export default function SignUpPage() {
                   clipRule="evenodd"
                 />
               </svg>
-              Continue with GitHub
+              {t('githubSignUp')}
             </button>
           </div>
         </div>
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Already have an account?{' '}
+          {t('haveAccount')}{' '}
           <Link
             href="/login"
             className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400"
           >
-            Sign in
+            {t('signInLink')}
           </Link>
         </p>
       </div>

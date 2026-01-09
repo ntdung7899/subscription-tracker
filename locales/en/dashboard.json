@@ -1,13 +1,16 @@
 {
   "title": "Dashboard",
+  "subtitle": "Overview of your subscriptions",
   "welcome": "Welcome back, {{name}}",
   "overview": "Overview",
   "stats": {
     "totalSubscriptions": "Total Subscriptions",
     "activeSubscriptions": "Active Subscriptions",
+    "monthlyCost": "Monthly Cost",
     "monthlySpending": "Monthly Spending",
     "yearlySpending": "Yearly Spending",
-    "upcomingPayments": "Upcoming Payments"
+    "expiringSoon": "Expiring Soon",
+    "totalMembers": "Total Members"
   },
   "charts": {
     "monthlySpending": "Monthly Spending Trend",
@@ -16,5 +19,8 @@
   },
   "recentSubscriptions": "Recent Subscriptions",
   "upcomingPayments": "Upcoming Payments",
-  "viewAll": "View All"
+  "viewAll": "View All",
+  "error": {
+    "loadingData": "Failed to load dashboard data"
+  }
 }
