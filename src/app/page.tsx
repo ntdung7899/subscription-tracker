@@ -5,9 +5,24 @@ import Link from 'next/link'
 import { Layers, Users, Bell, BarChart } from 'lucide-react'
 import LandingHeader from '@/components/LandingHeader'
 import { useTranslations } from 'next-intl'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const t = useTranslations('landing')
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  const handleViewDashboard = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    
+    // Check if user is authenticated
+    if (status === 'authenticated' && session) {
+      router.push('/dashboard')
+    } else {
+      router.push('/login')
+    }
+  }
   
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
@@ -35,12 +50,13 @@ export default function Home() {
               >
                 {t('hero.getStarted')}
               </Link>
-              <Link
+              <a
                 href="/dashboard"
-                className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-8 py-3 text-base font-medium text-gray-700 transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:ring-offset-gray-950"
+                onClick={handleViewDashboard}
+                className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-8 py-3 text-base font-medium text-gray-700 transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:ring-offset-gray-950 cursor-pointer"
               >
                 {t('hero.viewDashboard')}
-              </Link>
+              </a>
             </div>
             <div className="mt-16">
               <div className="relative mx-auto max-w-5xl rounded-xl border border-gray-200 bg-white p-2 shadow-2xl dark:border-gray-800 dark:bg-gray-900">
