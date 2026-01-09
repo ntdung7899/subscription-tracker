@@ -1,6 +1,7 @@
 import { Users } from 'lucide-react'
 import { MemberCard } from './MemberCard'
 import { FamilyGroupCardProps } from '../_types'
+import { useI18n } from '@/hooks/useI18n'
 
 export function FamilyGroupCard({
   familyGroups,
@@ -8,6 +9,8 @@ export function FamilyGroupCard({
   formatCurrency,
   formatDate,
 }: FamilyGroupCardProps) {
+  const { t } = useI18n()
+  
   if (!familyGroups || familyGroups.length === 0) {
     return null
   }
@@ -16,7 +19,7 @@ export function FamilyGroupCard({
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
         <Users className="w-5 h-5 mr-2" />
-        Family Groups ({familyGroups.length})
+        {t('subscriptions.detail.familyGroups.title')} ({familyGroups.length})
       </h2>
 
       <div className="space-y-6">
@@ -31,7 +34,7 @@ export function FamilyGroupCard({
 
             {group.members.length === 0 ? (
               <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
-                Chưa có thành viên
+                {t('subscriptions.detail.familyGroups.noMembers')}
               </p>
             ) : (
               <div className="space-y-3">

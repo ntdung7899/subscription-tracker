@@ -1,5 +1,6 @@
 import { Trash2 } from 'lucide-react'
 import { Member } from '../_types'
+import { useI18n } from '@/hooks/useI18n'
 
 interface MemberCardProps {
   member: Member
@@ -16,11 +17,13 @@ export default function MemberCard({
   onUpdate,
   onRemove,
 }: MemberCardProps) {
+  const { t } = useI18n()
+  
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-          Thành viên #{memberIndex + 1}
+          {t('subscriptions.edit.familyGroups.member', { number: memberIndex + 1 })}
         </span>
         <button
           type="button"
@@ -34,7 +37,7 @@ export default function MemberCard({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
           <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-            Tên
+            {t('subscriptions.edit.familyGroups.memberName')}
           </label>
           <input
             type="text"
@@ -47,7 +50,7 @@ export default function MemberCard({
 
         <div>
           <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-            Email
+            {t('subscriptions.edit.familyGroups.memberEmail')}
           </label>
           <input
             type="email"
@@ -60,7 +63,7 @@ export default function MemberCard({
 
         <div>
           <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-            Số tiền đã trả
+            {t('subscriptions.edit.familyGroups.amountPaid')}
           </label>
           <input
             type="number"
@@ -75,7 +78,7 @@ export default function MemberCard({
 
         <div>
           <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-            Ngày thanh toán tiếp theo
+            {t('subscriptions.edit.familyGroups.nextPaymentDate')}
           </label>
           <input
             type="date"
@@ -87,7 +90,7 @@ export default function MemberCard({
 
         <div>
           <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
-            Trạng thái
+            {t('subscriptions.fields.status')}
           </label>
           <select
             value={member.status}
@@ -96,9 +99,9 @@ export default function MemberCard({
             }
             className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-white"
           >
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
-            <option value="overdue">Overdue</option>
+            <option value="active">{t('subscriptions.status.active')}</option>
+            <option value="pending">{t('subscriptions.status.pending')}</option>
+            <option value="overdue">{t('subscriptions.status.overdue')}</option>
           </select>
         </div>
       </div>

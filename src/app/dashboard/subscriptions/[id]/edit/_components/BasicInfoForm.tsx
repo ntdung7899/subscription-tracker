@@ -1,4 +1,5 @@
 import { EditFormData } from '../_types'
+import { useI18n } from '@/hooks/useI18n'
 
 interface BasicInfoFormProps {
   formData: Pick<EditFormData, 'appName' | 'category' | 'price' | 'currency' | 'billingCycle' | 'notificationDays' | 'isShared'>
@@ -29,17 +30,19 @@ export default function BasicInfoForm({
   errors,
   onInputChange,
 }: BasicInfoFormProps) {
+  const { t } = useI18n()
+  
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-        Thông tin cơ bản
+        {t('subscriptions.edit.basicInfo')}
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* App Name */}
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Tên ứng dụng *
+            {t('subscriptions.fields.appName')} *
           </label>
           <input
             type="text"
@@ -48,7 +51,7 @@ export default function BasicInfoForm({
             className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600 dark:text-white ${
               errors.appName ? 'border-red-500' : 'border-gray-300'
             }`}
-            placeholder="Ví dụ: Netflix, Spotify..."
+            placeholder={t('subscriptions.fields.appNamePlaceholder')}
           />
           {errors.appName && (
             <p className="mt-1 text-sm text-red-600">{errors.appName}</p>
@@ -58,7 +61,7 @@ export default function BasicInfoForm({
         {/* Category */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Danh mục *
+            {t('subscriptions.fields.category')} *
           </label>
           <select
             value={formData.category}
@@ -67,7 +70,7 @@ export default function BasicInfoForm({
               errors.category ? 'border-red-500' : 'border-gray-300'
             }`}
           >
-            <option value="">Chọn danh mục</option>
+            <option value="">{t('subscriptions.fields.selectCategory')}</option>
             {categories.map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
@@ -82,7 +85,7 @@ export default function BasicInfoForm({
         {/* Billing Cycle */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Chu kỳ thanh toán *
+            {t('subscriptions.fields.billingCycle')} *
           </label>
           <select
             value={formData.billingCycle}
@@ -105,7 +108,7 @@ export default function BasicInfoForm({
         {/* Price */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Giá *
+            {t('subscriptions.fields.price')} *
           </label>
           <input
             type="number"
@@ -125,7 +128,7 @@ export default function BasicInfoForm({
         {/* Currency */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Đơn vị tiền tệ
+            {t('subscriptions.fields.currency')}
           </label>
           <select
             value={formData.currency}
@@ -143,7 +146,7 @@ export default function BasicInfoForm({
         {/* Notification Days */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Thông báo trước (ngày)
+            {t('subscriptions.fields.notificationDays')}
           </label>
           <input
             type="number"
@@ -165,7 +168,7 @@ export default function BasicInfoForm({
               className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Chia sẻ subscription này
+              {t('subscriptions.fields.isShared')}
             </span>
           </label>
         </div>

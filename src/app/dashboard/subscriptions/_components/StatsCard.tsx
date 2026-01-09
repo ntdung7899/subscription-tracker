@@ -1,5 +1,6 @@
 import { Users, Calendar, RefreshCw } from 'lucide-react'
 import { StatsCardProps } from '../_types'
+import { useI18n } from '@/hooks/useI18n'
 
 export function StatsCard({
   totalMembers,
@@ -8,10 +9,12 @@ export function StatsCard({
   isShared,
   formatDate,
 }: StatsCardProps) {
+  const { t } = useI18n()
+  
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-        Thống kê
+        {t('subscriptions.detail.stats.title')}
       </h2>
 
       <div className="space-y-4">
@@ -19,7 +22,7 @@ export function StatsCard({
           <div className="flex items-center justify-between">
             <div className="flex items-center text-gray-600 dark:text-gray-400">
               <Users className="w-5 h-5 mr-3" />
-              <span className="text-sm">Tổng thành viên</span>
+              <span className="text-sm">{t('subscriptions.detail.stats.totalMembers')}</span>
             </div>
             <span className="font-semibold text-gray-900 dark:text-white">
               {totalMembers}
@@ -30,7 +33,7 @@ export function StatsCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center text-gray-600 dark:text-gray-400">
             <Calendar className="w-5 h-5 mr-3" />
-            <span className="text-sm">Ngày tạo</span>
+            <span className="text-sm">{t('subscriptions.detail.stats.createdAt')}</span>
           </div>
           <span className="text-sm font-medium text-gray-900 dark:text-white">
             {formatDate(createdAt)}
@@ -40,7 +43,7 @@ export function StatsCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center text-gray-600 dark:text-gray-400">
             <RefreshCw className="w-5 h-5 mr-3" />
-            <span className="text-sm">Cập nhật</span>
+            <span className="text-sm">{t('subscriptions.detail.stats.updatedAt')}</span>
           </div>
           <span className="text-sm font-medium text-gray-900 dark:text-white">
             {formatDate(updatedAt)}

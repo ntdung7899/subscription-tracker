@@ -1,6 +1,8 @@
 import { MemberCardProps, getMemberStatusColor } from '../_types'
+import { useI18n } from '@/hooks/useI18n'
 
 export function MemberCard({ member, currency, formatCurrency, formatDate }: MemberCardProps) {
+  const { t } = useI18n()
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
@@ -30,7 +32,7 @@ export function MemberCard({ member, currency, formatCurrency, formatDate }: Mem
       <div className="grid grid-cols-2 gap-4 pt-3 border-t border-gray-200 dark:border-gray-700">
         <div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-            Đã thanh toán
+            {t('subscriptions.detail.member.amountPaid')}
           </p>
           <p className="font-medium text-gray-900 dark:text-white">
             {formatCurrency(member.amountPaid, currency)}
@@ -38,7 +40,7 @@ export function MemberCard({ member, currency, formatCurrency, formatDate }: Mem
         </div>
         <div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-            Thanh toán tiếp theo
+            {t('subscriptions.detail.member.nextPayment')}
           </p>
           <p className="font-medium text-gray-900 dark:text-white">
             {formatDate(member.nextPaymentDate)}

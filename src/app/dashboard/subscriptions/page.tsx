@@ -19,6 +19,7 @@ import {
   CATEGORY_COLORS,
 } from './_types'
 import { ServiceIcons, getServiceIcon } from '@/assets/serviceIcons'
+import { useI18n } from '@/hooks/useI18n'
 
 interface Category {
   id: string
@@ -29,6 +30,7 @@ interface Category {
 }
 
 export default function SubscriptionsPage() {
+  const { t } = useI18n()
   const [subscriptions, setSubscriptions] = useState<SubscriptionWithRelations[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -92,7 +94,7 @@ export default function SubscriptionsPage() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Bạn có chắc chắn muốn xóa subscription này?')) {
+    if (!confirm(t('subscriptions.actions.deleteConfirm'))) {
       return
     }
 
@@ -108,7 +110,7 @@ export default function SubscriptionsPage() {
       setSubscriptions((prev) => prev.filter((sub) => sub.id !== id))
       setActiveMenu(null)
     } catch (err) {
-      alert('Không thể xóa subscription')
+      alert(t('subscriptions.deleteError'))
     }
   }
 
@@ -177,7 +179,7 @@ export default function SubscriptionsPage() {
       // Refresh categories
       fetchCategories()
     } catch (err: any) {
-      alert(err.message || 'Không thể tạo category')
+      alert(err.message || t('subscriptions.category.createError'))
     } finally {
       setIsSubmitting(false)
     }
@@ -196,7 +198,7 @@ export default function SubscriptionsPage() {
   }
 
   const handleDeleteCategory = async (categoryId: string, categoryName: string) => {
-    if (!confirm(`Bạn có chắc muốn xóa category "${categoryName}"?`)) {
+    if (!confirm(t('subscriptions.category.deleteConfirm', { name: categoryName }))) {
       return
     }
 
@@ -218,7 +220,7 @@ export default function SubscriptionsPage() {
         setSelectedCategory('All')
       }
     } catch (err) {
-      alert('Không thể xóa category')
+      alert(t('subscriptions.category.deleteError'))
     }
   }
 
@@ -238,7 +240,7 @@ export default function SubscriptionsPage() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-blue-600 dark:text-blue-400 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">Đang tải subscriptions...</p>
+          <p className="text-gray-600 dark:text-gray-400">{t('subscriptions.loading')}</p>
         </div>
       </div>
     )
@@ -254,7 +256,7 @@ export default function SubscriptionsPage() {
             onClick={fetchSubscriptions}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
           >
-            Thử lại
+            {t('subscriptions.tryAgain')}
           </button>
         </div>
       </div>
@@ -268,10 +270,10 @@ export default function SubscriptionsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Subscriptions
+              {t('subscriptions.title')}
             </h1>
             <p className="mt-2 text-gray-600 dark:text-gray-400">
-              Quản lý tất cả subscriptions của bạn
+              {t('subscriptions.subtitle')}
             </p>
           </div>
           <Link
@@ -279,7 +281,7 @@ export default function SubscriptionsPage() {
             className="inline-flex items-center justify-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
           >
             <Plus className="w-5 h-5 mr-2" />
-            Thêm Subscription
+            {t('subscriptions.addSubscription')}
           </Link>
         </div>
 
@@ -289,7 +291,7 @@ export default function SubscriptionsPage() {
             <div className="flex items-center">
               <Filter className="w-5 h-5 text-gray-600 dark:text-gray-400 mr-2" />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Lọc theo Category
+                {t('subscriptions.filterByCategory')}
               </span>
             </div>
             <button
@@ -297,7 +299,7 @@ export default function SubscriptionsPage() {
               className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
             >
               <Plus className="w-4 h-4 mr-1" />
-              Category
+              {t('subscriptions.addCategory')}
             </button>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -315,7 +317,7 @@ export default function SubscriptionsPage() {
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
-                    {category}
+                    {category === 'All' ? t('subscriptions.all') : category}
                     {category !== 'All' && (
                       <span className="ml-2 text-xs opacity-75">
                         ({subscriptions.filter((s) => s.category === category).length})
@@ -354,7 +356,7 @@ export default function SubscriptionsPage() {
                               className="w-full flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                             >
                               <Edit className="w-3.5 h-3.5 mr-2" />
-                              Chỉnh sửa
+                              {t('subscriptions.actions.edit')}
                             </button>
                             <button
                               onClick={() =>
@@ -363,7 +365,7 @@ export default function SubscriptionsPage() {
                               className="w-full flex items-center px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                             >
                               <Trash2 className="w-3.5 h-3.5 mr-2" />
-                              Xóa
+                              {t('subscriptions.actions.delete')}
                             </button>
                           </div>
                         </>
@@ -383,17 +385,21 @@ export default function SubscriptionsPage() {
               <DollarSign className="w-8 h-8 text-gray-400 dark:text-gray-500" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-              {subscriptions.length === 0 ? 'Chưa có subscription nào' : `Không có subscription nào trong category "${selectedCategory}"`}
+              {subscriptions.length === 0 
+                ? t('subscriptions.noSubscriptions') 
+                : t('subscriptions.noSubscriptionsInCategory', { category: selectedCategory })}
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              {subscriptions.length === 0 ? 'Bắt đầu bằng cách thêm subscription đầu tiên của bạn' : 'Thử chọn category khác hoặc thêm subscription mới'}
+              {subscriptions.length === 0 
+                ? t('subscriptions.noSubscriptionsDesc') 
+                : t('subscriptions.tryAnotherCategory')}
             </p>
             <Link
               href="/dashboard/subscriptions/new"
               className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Thêm Subscription
+              {t('subscriptions.addSubscription')}
             </Link>
           </div>
         ) : (
@@ -463,14 +469,14 @@ export default function SubscriptionsPage() {
                               onClick={() => setActiveMenu(null)}
                             >
                               <Edit className="w-4 h-4 mr-3" />
-                              Chỉnh sửa
+                              {t('subscriptions.actions.edit')}
                             </Link>
                             <button
                               onClick={() => handleDelete(subscription.id)}
                               className="w-full flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                             >
                               <Trash2 className="w-4 h-4 mr-3" />
-                              Xóa
+                              {t('subscriptions.actions.delete')}
                             </button>
                           </div>
                         </>
@@ -484,7 +490,7 @@ export default function SubscriptionsPage() {
                       {formatCurrency(subscription.price, subscription.currency)}
                     </span>
                     <span className="text-gray-500 dark:text-gray-400 text-sm">
-                      /{subscription.billingCycle === 'monthly' ? 'tháng' : 'năm'}
+                      /{subscription.billingCycle === 'monthly' ? t('subscriptions.fields.monthly') : t('subscriptions.fields.yearly')}
                     </span>
                   </div>
                 </div>
@@ -495,7 +501,7 @@ export default function SubscriptionsPage() {
                   <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                     <Calendar className="w-4 h-4 mr-3 flex-shrink-0" />
                     <span className="capitalize">
-                      {subscription.billingCycle === 'monthly' ? 'Hàng tháng' : 'Hàng năm'}
+                      {subscription.billingCycle === 'monthly' ? t('subscriptions.fields.monthly') : t('subscriptions.fields.yearly')}
                     </span>
                   </div>
 
@@ -504,11 +510,12 @@ export default function SubscriptionsPage() {
                     <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                       <Users className="w-4 h-4 mr-3 flex-shrink-0" />
                       <span>
-                        Chia sẻ • {subscription.familyGroups.reduce(
-                          (acc, group) => acc + group.members.length,
-                          0
-                        )}{' '}
-                        thành viên
+                        {t('subscriptions.fields.isShared')} • {t('subscriptions.shared.members', {
+                          count: subscription.familyGroups.reduce(
+                            (acc, group) => acc + group.members.length,
+                            0
+                          )
+                        })}
                       </span>
                     </div>
                   )}
@@ -516,7 +523,7 @@ export default function SubscriptionsPage() {
                   {/* Notification */}
                   <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                     <AlertCircle className="w-4 h-4 mr-3 flex-shrink-0" />
-                    <span>Nhắc trước {subscription.notificationDays} ngày</span>
+                    <span>{t('subscriptions.notification.remindBefore', { days: subscription.notificationDays })}</span>
                   </div>
                 </div>
 
@@ -526,7 +533,7 @@ export default function SubscriptionsPage() {
                     href={`/dashboard/subscriptions/${subscription.id}`}
                     className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                   >
-                    Xem chi tiết →
+                    {t('subscriptions.actions.viewDetails')} →
                   </Link>
                 </div>
               </div>
@@ -550,14 +557,14 @@ export default function SubscriptionsPage() {
                   <div className="sm:flex sm:items-start">
                     <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
                       <h3 className="text-lg font-semibold leading-6 text-gray-900 dark:text-white mb-4">
-                        {editingCategory ? 'Chỉnh sửa Category' : 'Tạo Category mới'}
+                        {editingCategory ? t('subscriptions.category.edit') : t('subscriptions.category.createNew')}
                       </h3>
 
                       <div className="space-y-4">
                         {/* Category Name */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Tên Category *
+                            {t('subscriptions.category.name')} *
                           </label>
                           <input
                             type="text"
@@ -566,7 +573,7 @@ export default function SubscriptionsPage() {
                               setCategoryForm({ ...categoryForm, categoryName: e.target.value })
                             }
                             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-white"
-                            placeholder="VD: Entertainment, Productivity..."
+                            placeholder={t('subscriptions.category.namePlaceholder')}
                             required
                           />
                         </div>
@@ -574,7 +581,7 @@ export default function SubscriptionsPage() {
                         {/* Description */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Mô tả
+                            {t('subscriptions.category.description')}
                           </label>
                           <textarea
                             value={categoryForm.description}
@@ -583,14 +590,14 @@ export default function SubscriptionsPage() {
                             }
                             rows={3}
                             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-white"
-                            placeholder="Mô tả ngắn gọn về category này..."
+                            placeholder={t('subscriptions.category.descriptionPlaceholder')}
                           />
                         </div>
 
                         {/* Color Picker */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Màu sắc
+                            {t('subscriptions.category.color')}
                           </label>
                           <div className="flex items-center space-x-3">
                             <input
@@ -616,7 +623,7 @@ export default function SubscriptionsPage() {
                         {/* Status */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Trạng thái
+                            {t('subscriptions.fields.status')}
                           </label>
                           <select
                             value={categoryForm.status}
@@ -625,7 +632,7 @@ export default function SubscriptionsPage() {
                             }
                             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:text-white"
                           >
-                            <option value="active">Active</option>
+                            <option value="active">{t('subscriptions.status.active')}</option>
                             <option value="inactive">Inactive</option>
                           </select>
                         </div>
@@ -643,10 +650,10 @@ export default function SubscriptionsPage() {
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        {editingCategory ? 'Đang cập nhật...' : 'Đang tạo...'}
+                        {editingCategory ? t('subscriptions.category.updating') : t('subscriptions.category.creating')}
                       </>
                     ) : (
-                      editingCategory ? 'Cập nhật' : 'Tạo Category'
+                      editingCategory ? t('subscriptions.category.update') : t('subscriptions.category.create')
                     )}
                   </button>
                   <button
@@ -655,7 +662,7 @@ export default function SubscriptionsPage() {
                     disabled={isSubmitting}
                     className="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Hủy
+                    {t('subscriptions.actions.cancel')}
                   </button>
                 </div>
               </form>

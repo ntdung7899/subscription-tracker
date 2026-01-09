@@ -71,5 +71,100 @@
   "noFamilyGroups": "Chưa có nhóm gia đình nào. Nhấn \"Thêm nhóm gia đình\" để bắt đầu.",
   "noMembers": "Chưa có thành viên nào",
   "group": "Nhóm #{number}",
-  "member": "Thành viên #{number}"
+  "member": "Thành viên #{number}",
+  "category": {
+    "createNew": "Tạo Category mới",
+    "edit": "Chỉnh sửa Category",
+    "name": "Tên Category",
+    "namePlaceholder": "VD: Entertainment, Productivity...",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "Mô tả ngắn gọn về category này...",
+    "color": "Màu sắc",
+    "creating": "Đang tạo...",
+    "updating": "Đang cập nhật...",
+    "create": "Tạo Category",
+    "update": "Cập nhật",
+    "deleteConfirm": "Bạn có chắc muốn xóa category \"{name}\"?",
+    "createError": "Không thể tạo category",
+    "deleteError": "Không thể xóa category"
+  },
+  "loading": "Đang tải subscriptions...",
+  "tryAgain": "Thử lại",
+  "deleteError": "Không thể xóa subscription",
+  "all": "Tất cả",
+  "edit": {
+    "title": "Chỉnh sửa Subscription",
+    "subtitle": "Cập nhật thông tin subscription của bạn",
+    "basicInfo": "Thông tin cơ bản",
+    "backToDetail": "Quay lại chi tiết",
+    "cancel": "Hủy",
+    "save": "Lưu thay đổi",
+    "saving": "Đang lưu...",
+    "validation": {
+      "appNameRequired": "Tên ứng dụng là bắt buộc",
+      "categoryRequired": "Danh mục là bắt buộc",
+      "priceInvalid": "Giá phải lớn hơn 0",
+      "billingCycleRequired": "Chu kỳ thanh toán là bắt buộc",
+      "checkInfo": "Vui lòng kiểm tra lại thông tin"
+    },
+    "toast": {
+      "updateSuccess": "Cập nhật subscription thành công!",
+      "updateError": "Không thể cập nhật subscription",
+      "loadError": "Không thể tải thông tin subscription"
+    },
+    "familyGroups": {
+      "title": "Family Groups",
+      "addGroup": "Thêm nhóm",
+      "noGroups": "Chưa có nhóm nào. Nhấn \"Thêm nhóm\" để bắt đầu.",
+      "group": "Nhóm #{number}",
+      "groupName": "Tên nhóm",
+      "purchaseDate": "Ngày mua",
+      "expirationDate": "Ngày hết hạn",
+      "notes": "Ghi chú",
+      "notesPlaceholder": "Thêm ghi chú về nhóm này...",
+      "members": "Thành viên",
+      "addMember": "Thêm",
+      "noMembers": "Chưa có thành viên",
+      "member": "Thành viên #{number}",
+      "memberName": "Tên",
+      "memberEmail": "Email",
+      "amountPaid": "Số tiền đã trả",
+      "nextPaymentDate": "Ngày thanh toán tiếp theo"
+    },
+    "loading": "Đang tải..."
+  },
+  "detail": {
+    "backToList": "Quay lại danh sách",
+    "shared": "Chia sẻ",
+    "delete": "Xóa",
+    "deleting": "Đang xóa...",
+    "notFound": "Không tìm thấy subscription",
+    "backButton": "Quay lại",
+    "loading": "Đang tải...",
+    "priceInfo": {
+      "title": "Thông tin giá",
+      "billingCycle": "Chu kỳ thanh toán:",
+      "reminder": "Nhắc nhở trước {days} ngày"
+    },
+    "stats": {
+      "title": "Thống kê",
+      "totalMembers": "Tổng thành viên",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Cập nhật"
+    },
+    "quickActions": {
+      "title": "Thao tác nhanh",
+      "edit": "Chỉnh sửa thông tin",
+      "sendReminder": "Gửi nhắc nhở",
+      "featureInDevelopment": "Tính năng đang phát triển"
+    },
+    "familyGroups": {
+      "title": "Family Groups",
+      "noMembers": "Chưa có thành viên"
+    },
+    "member": {
+      "amountPaid": "Đã thanh toán",
+      "nextPayment": "Thanh toán tiếp theo"
+    }
+  }
 }

@@ -71,5 +71,100 @@
   "noFamilyGroups": "No family groups added yet. Click \"Add Family Group\" to get started.",
   "noMembers": "No members added yet",
   "group": "Group #{number}",
-  "member": "Member #{number}"
+  "member": "Member #{number}",
+  "category": {
+    "createNew": "Create New Category",
+    "edit": "Edit Category",
+    "name": "Category Name",
+    "namePlaceholder": "E.g: Entertainment, Productivity...",
+    "description": "Description",
+    "descriptionPlaceholder": "Brief description of this category...",
+    "color": "Color",
+    "creating": "Creating...",
+    "updating": "Updating...",
+    "create": "Create Category",
+    "update": "Update",
+    "deleteConfirm": "Are you sure you want to delete category \"{name}\"?",
+    "createError": "Cannot create category",
+    "deleteError": "Cannot delete category"
+  },
+  "loading": "Loading subscriptions...",
+  "tryAgain": "Try again",
+  "deleteError": "Cannot delete subscription",
+  "all": "All",
+  "edit": {
+    "title": "Edit Subscription",
+    "subtitle": "Update your subscription information",
+    "basicInfo": "Basic Information",
+    "backToDetail": "Back to detail",
+    "cancel": "Cancel",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "validation": {
+      "appNameRequired": "App name is required",
+      "categoryRequired": "Category is required",
+      "priceInvalid": "Price must be greater than 0",
+      "billingCycleRequired": "Billing cycle is required",
+      "checkInfo": "Please check your information"
+    },
+    "toast": {
+      "updateSuccess": "Subscription updated successfully!",
+      "updateError": "Cannot update subscription",
+      "loadError": "Cannot load subscription information"
+    },
+    "familyGroups": {
+      "title": "Family Groups",
+      "addGroup": "Add group",
+      "noGroups": "No groups yet. Click \"Add group\" to start.",
+      "group": "Group #{number}",
+      "groupName": "Group name",
+      "purchaseDate": "Purchase date",
+      "expirationDate": "Expiration date",
+      "notes": "Notes",
+      "notesPlaceholder": "Add notes about this group...",
+      "members": "Members",
+      "addMember": "Add",
+      "noMembers": "No members yet",
+      "member": "Member #{number}",
+      "memberName": "Name",
+      "memberEmail": "Email",
+      "amountPaid": "Amount paid",
+      "nextPaymentDate": "Next payment date"
+    },
+    "loading": "Loading..."
+  },
+  "detail": {
+    "backToList": "Back to list",
+    "shared": "Shared",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "notFound": "Subscription not found",
+    "backButton": "Go back",
+    "loading": "Loading...",
+    "priceInfo": {
+      "title": "Price Information",
+      "billingCycle": "Billing cycle:",
+      "reminder": "Reminder {days} days before"
+    },
+    "stats": {
+      "title": "Statistics",
+      "totalMembers": "Total members",
+      "createdAt": "Created",
+      "updatedAt": "Updated"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "edit": "Edit information",
+      "sendReminder": "Send reminder",
+      "featureInDevelopment": "Feature in development"
+    },
+    "familyGroups": {
+      "title": "Family Groups",
+      "noMembers": "No members yet"
+    },
+    "member": {
+      "amountPaid": "Paid",
+      "nextPayment": "Next payment"
+    }
+  }
 }

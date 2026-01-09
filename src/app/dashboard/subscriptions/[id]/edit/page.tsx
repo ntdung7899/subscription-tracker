@@ -7,6 +7,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { BasicInfoForm, FamilyGroupsSection } from "./_components";
 import { Member, FamilyGroup, EditFormData } from "./_types";
+import { useI18n } from '@/hooks/useI18n'
 
 const categories = [
   "Productivity",
@@ -27,6 +28,7 @@ const billingCycles = [
 ];
 
 export default function EditSubscriptionPage() {
+  const { t } = useI18n();
   const router = useRouter();
   const params = useParams();
   const subscriptionId = params.id as string;
@@ -103,7 +105,7 @@ export default function EditSubscriptionPage() {
       });
     } catch (error) {
       console.error("Error fetching subscription:", error);
-      toast.error("Không thể tải thông tin subscription");
+      toast.error(t('subscriptions.edit.toast.loadError'));
       router.push("/dashboard/subscriptions");
     } finally {
       setIsLoading(false);
@@ -114,19 +116,19 @@ export default function EditSubscriptionPage() {
     const newErrors: Record<string, string> = {};
 
     if (!formData.appName.trim()) {
-      newErrors.appName = "Tên ứng dụng là bắt buộc";
+      newErrors.appName = t('subscriptions.edit.validation.appNameRequired');
     }
 
     if (!formData.category) {
-      newErrors.category = "Danh mục là bắt buộc";
+      newErrors.category = t('subscriptions.edit.validation.categoryRequired');
     }
 
     if (!formData.price || parseFloat(formData.price) <= 0) {
-      newErrors.price = "Giá phải lớn hơn 0";
+      newErrors.price = t('subscriptions.edit.validation.priceInvalid');
     }
 
     if (!formData.billingCycle) {
-      newErrors.billingCycle = "Chu kỳ thanh toán là bắt buộc";
+      newErrors.billingCycle = t('subscriptions.edit.validation.billingCycleRequired');
     }
 
     setErrors(newErrors);
@@ -137,7 +139,7 @@ export default function EditSubscriptionPage() {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error("Vui lòng kiểm tra lại thông tin");
+      toast.error(t('subscriptions.edit.validation.checkInfo'));
       return;
     }
 
@@ -175,11 +177,11 @@ export default function EditSubscriptionPage() {
         );
       }
 
-      toast.success("Cập nhật subscription thành công!");
+      toast.success(t('subscriptions.edit.toast.updateSuccess'));
       router.push(`/dashboard/subscriptions/${subscriptionId}`);
     } catch (error) {
       console.error("Error updating subscription:", error);
-      toast.error("Không thể cập nhật subscription");
+      toast.error(t('subscriptions.edit.toast.updateError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -290,7 +292,7 @@ export default function EditSubscriptionPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-blue-600" />
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Đang tải...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">{t('subscriptions.edit.loading')}</p>
         </div>
       </div>
     );
@@ -305,13 +307,13 @@ export default function EditSubscriptionPage() {
           className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Quay lại chi tiết
+          {t('subscriptions.edit.backToDetail')}
         </Link>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Chỉnh sửa Subscription
+          {t('subscriptions.edit.title')}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Cập nhật thông tin subscription của bạn
+          {t('subscriptions.edit.subtitle')}
         </p>
       </div>
 
@@ -343,7 +345,7 @@ export default function EditSubscriptionPage() {
             href={`/dashboard/subscriptions/${subscriptionId}`}
             className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
-            Hủy
+            {t('subscriptions.edit.cancel')}
           </Link>
           <button
             type="submit"
@@ -353,12 +355,12 @@ export default function EditSubscriptionPage() {
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Đang lưu...
+                {t('subscriptions.edit.saving')}
               </>
             ) : (
               <>
                 <Save className="w-4 h-4 mr-2" />
-                Lưu thay đổi
+                {t('subscriptions.edit.save')}
               </>
             )}
           </button>
